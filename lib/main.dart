@@ -1,78 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'upload.dart';
+import 'Auth.dart';
 
-Future<void> main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(
-      home: Community()
-  ));
+  runApp(MyApp());
 }
 
-class Community extends StatefulWidget {
-  const Community({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  _CommunityState createState() => _CommunityState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _CommunityState extends State<Community> {
-  final textController = TextEditingController();
+class _MyAppState extends State<MyApp> {
   @override
-
-  CollectionReference posts= FirebaseFirestore.instance
-      .collection('posts');
-
-  // posts.add({
-  // 'poster':textController.text
-  // });
-
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title:TextField(
-            controller: textController,
-          )
-        ),
-        body: Center(
-          child: StreamBuilder(
-            stream: posts.snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-              if(!snapshot.hasData){
-                return Center(child: Text('loading'));
-              }
-              return ListView(
-                children: snapshot.data!.docs.map((post){
-                  return Center(
-                    child: ListTile(
-                      title: Text(post['poster'].toString()),
-                      onLongPress: (){
-                        post.reference.delete();
-                      },
-                    ),
-                  );
-                }).toList(),
-              );
-            },
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => upload()));
-          },
-        ),
-      ),
-
+      home: user == null ?Auth():upload(),
+      routes: <String, WidgetBuilder>{
+        '/auth': (BuildContext context) => Auth(),
+        '/upload' : (BuildContext context) => upload(),
+        // '/screen3' : (BuildContext context) => new Screen3(),
+        // '/screen4' : (BuildContext context) => new Screen4()
+      },
     );
   }
 }
-
-    
-    
