@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'upload.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(Community());
+  runApp(MaterialApp(
+      home: Community()
+  ));
 }
 
 class Community extends StatefulWidget {
@@ -21,6 +26,10 @@ class _CommunityState extends State<Community> {
 
   CollectionReference posts= FirebaseFirestore.instance
       .collection('posts');
+
+  // posts.add({
+  // 'poster':textController.text
+  // });
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,15 +61,13 @@ class _CommunityState extends State<Community> {
             },
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: Icon(Icons.save),
-        //   onPressed: (){
-        //     posts.add({
-        //       'poster':textController.text
-        //     });
-        //
-        //   },
-        // ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => upload()));
+          },
+        ),
       ),
 
     );
