@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:firebase_storage/firebase_storage.dart' as storage;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,6 +11,8 @@ import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+User? user = FirebaseAuth.instance.currentUser;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,34 +39,35 @@ class _uploadState extends State<upload> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-          MaterialButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(20.0),
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                ),
+                elevation: 5.0,
+                height: 60,
+                onPressed: () {
+                  getImage();
+                },
+                child: Text(
+                  "  Get image",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+                color: Colors.blue,
               ),
-            ),
-            elevation: 5.0,
-            height: 60,
-            onPressed: () {
-              getImage();
-            },
-            child: Text(
-              "  Get image",
-              style: TextStyle(
-                fontSize: 20,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-            color: Colors.blue,
-          ),
-          ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushNamedAndRemoveUntil('/auth',(Route<dynamic> route) => false);
-                setState(() {});
-              },
-              child: Text('Log out'))
-        ])),
+              ElevatedButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/auth', (Route<dynamic> route) => false);
+                    setState(() {});
+                  },
+                  child: Text('Log out'))
+            ])),
       ),
     );
   }
@@ -92,12 +96,30 @@ class _uploadState extends State<upload> {
   Future _uploadFile(String path) async {
     final ref = storage.FirebaseStorage.instance
         .ref()
-        .child('image')
+        .child('posts')
         .child('${DateTime.now().toIso8601String() + p.basename(path)}');
 
     final result = await ref.putFile(File(path));
     final fileUrl = await result.ref.getDownloadURL();
 
+    CollectionReference posts = FirebaseFirestore.instance.collection('posts');
+    CollectionReference postpics =
+        FirebaseFirestore.instance.collection('postpics');
+
+    var docRef = await posts.add({
+      'poster': user!.uid,
+      'content': 'test message',
+      'publish_date ': DateTime.now(),
+      'reported': false
+    });
+
+    var postid = docRef.id;
+    postpics.add({
+      'post_id': postid,
+      'pic_url': fileUrl,
+    });
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/post', (Route<dynamic> route) => false);
     setState(() {
       imageUrl = fileUrl;
     });

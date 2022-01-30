@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'upload.dart';
 import 'Auth.dart';
 
+import 'community.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,12 +24,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
-      home: user == null ?Auth():upload(),
+      home: user == null ?Auth():community(),
       routes: <String, WidgetBuilder>{
         '/auth': (BuildContext context) => Auth(),
         '/upload' : (BuildContext context) => upload(),
-        // '/screen3' : (BuildContext context) => new Screen3(),
-        // '/screen4' : (BuildContext context) => new Screen4()
+        '/community' : (BuildContext context) => community(),
       },
     );
   }
