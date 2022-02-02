@@ -1,7 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../Model/UserModel.dart';
+import '../Controller/AuthController.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +26,10 @@ class _AuthState extends State<Auth> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('auth (Logged' + (user == null ? 'out' : 'in') + ')'),
+          title: const Text('auth'),
         ),
         body: Form(
             key: _key,
@@ -56,20 +55,16 @@ class _AuthState extends State<Auth> {
                     children: [
                       ElevatedButton(
                           onPressed: () async {
-                            CollectionReference users =
-                                FirebaseFirestore.instance.collection('users');
                             if (_key.currentState!.validate()) {
                               try {
                                 await FirebaseAuth.instance
                                     .createUserWithEmailAndPassword(
                                         email: emailController.text,
                                         password: passwordController.text)
-                                    .then((value) => users
-                                            .doc(value.user!.uid)
-                                            .set({
-                                          'nickname': nicknameController.text,
-                                          'uid': value.user?.uid
-                                        }));
+                                    .then((value) => createUser(UserModel(
+                                          uid: (value.user?.uid).toString(),
+                                          nickname: nicknameController.text,
+                                        )));
 
                                 errorMessage = '';
                                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -110,7 +105,7 @@ class _AuthState extends State<Auth> {
                               setState(() {});
                             }
                           },
-                          child: Text('Sign in')),
+                          child: const Text('Sign in')),
                     ],
                   )
                 ],

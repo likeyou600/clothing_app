@@ -36,7 +36,7 @@ var kTimeStyle = GoogleFonts.lato(
 
 var kHintStyle = GoogleFonts.lato(
     textStyle: TextStyle(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w400,
-      color: kGrey1Color,
-    ));
+  fontSize: 16.0,
+  fontWeight: FontWeight.w400,
+  color: kGrey1Color,
+));

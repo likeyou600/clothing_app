@@ -1,24 +1,24 @@
 import 'dart:convert';
 
 class UserModel {
-  String nickname;
   String uid;
+  String nickname;
   UserModel({
-    required this.nickname,
     required this.uid,
+    required this.nickname,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'nickname': nickname,
       'uid': uid,
+      'nickname': nickname,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      nickname: map['nickname'] ?? '',
       uid: map['uid'] ?? '',
+      nickname: map['nickname'] ?? '',
     );
   }
 
@@ -27,5 +27,3 @@ class UserModel {
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source));
 }
-
-// your document id should be same as uid. 
