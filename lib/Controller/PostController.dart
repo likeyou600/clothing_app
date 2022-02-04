@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:clothing_app/Model/CommentModel.dart';
 import 'package:clothing_app/Model/PostModel.dart';
+import 'package:clothing_app/View/comment.dart';
 import 'package:clothing_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +17,22 @@ User? user = FirebaseAuth.instance.currentUser;
 Future createPost(PostModel postModel) async {
   final json = postModel.toMap();
   await posts.doc().set(json);
+}
+
+//刪貼文
+Future deletePost(String postId) async {
+  await posts.doc(postId).delete();
+  await comments
+      .where('post_id', isEqualTo: postId)
+      .get()
+      .then((value) => value.docs.forEach((element) {
+            comments.doc(element.id).delete();
+          }));
+}
+
+//檢舉貼文reportedpost
+Future reportedpost(String postId) async {
+  await posts.doc(postId).update({'reported': true});
 }
 
 //按貼文讚
@@ -105,7 +122,7 @@ class commentnumberWidget extends StatelessWidget {
       initialData: "",
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return Text(
-          "查看全部" + snapshot.data.toString() + "則留言",
+          "查看全部 " + snapshot.data.toString() + " 則留言",
           style: kSubtitleStyle.copyWith(
             color: Colors.black38,
             fontSize: 15.0,
@@ -113,5 +130,57 @@ class commentnumberWidget extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+//取得貼文數
+
+Future getpostnumber(String uid) async {
+  QuerySnapshot<Map<String, dynamic>> posts = await FirebaseFirestore.instance
+      .collection('posts')
+      .where('poster', isEqualTo: uid)
+      .get();
+  var postnumber = posts.size;
+  return postnumber;
+}
+
+class postnumberWidget extends StatelessWidget {
+  final String uid;
+
+  postnumberWidget(
+    this.uid,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: getpostnumber(uid),
+        initialData: "",
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                snapshot.data.toString(),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 4),
+                child: const Text(
+                  '貼文數',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 }

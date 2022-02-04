@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Model/PostModel.dart';
@@ -12,7 +13,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 final ImagePicker image = ImagePicker();
 String? imageUrl;
-User? user = FirebaseAuth.instance.currentUser;
 
 getImage() async {
   final pickimg = await image.pickImage(source: ImageSource.gallery);
@@ -20,9 +20,11 @@ getImage() async {
     var file = await ImageCropper.cropImage(
         sourcePath: pickimg.path,
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
-    file = await compressImage(file!.path, 35);
+    file = await compressImage(file!.path, 90);
 
-    await _uploadFile(file.path);
+    final url = await _uploadFile(file.path);
+
+    return url;
   }
 }
 
@@ -43,14 +45,18 @@ Future _uploadFile(String path) async {
 
   final result = await ref.putFile(File(path));
   final fileUrl = await result.ref.getDownloadURL();
+  return fileUrl;
+}
+
+Future savepictodb(String comment, String url) async {
   DocumentSnapshot userDoc =
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
   createPost(PostModel(
       poster: user!.uid,
-      content: 'test message',
+      content: comment,
       publish_time: DateTime.now(),
       reported: false,
-      postpics: [fileUrl],
+      postpics: [url],
       collections: [],
       likes: []));
 }

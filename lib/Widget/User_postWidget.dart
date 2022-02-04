@@ -1,24 +1,21 @@
-import 'dart:developer';
-
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/View/comment.dart';
 import 'package:clothing_app/Widget/like_animation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../Controller/PostController.dart';
 import '../constants.dart';
 
-class postWidget extends StatefulWidget {
+class User_postWidget extends StatefulWidget {
   final postData;
 
-  postWidget(this.postData);
+  User_postWidget(this.postData);
   @override
-  _postWidgetState createState() => _postWidgetState();
+  _User_postWidgetState createState() => _User_postWidgetState();
 }
 
-class _postWidgetState extends State<postWidget> {
+class _User_postWidgetState extends State<User_postWidget> {
   bool isLikeAnimating = false;
 
   @override
@@ -43,7 +40,6 @@ class _postWidgetState extends State<postWidget> {
     }
 
     return Container(
-      decoration: new BoxDecoration(color: Color.fromRGBO(232, 215, 199, 100)),
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,18 +51,48 @@ class _postWidgetState extends State<postWidget> {
             ),
             child: Row(
               children: <Widget>[
-                const CircleAvatar(
-                    radius: 20.0,
-                    backgroundColor: Colors.black12,
-                    backgroundImage:
-                        NetworkImage('https://picsum.photos/250?image=9')),
+                UserPicWidget(widget.postData['poster'], 20),
                 const SizedBox(width: 12.0),
                 UserNicknameWidget(widget.postData['poster']),
                 Expanded(child: Container()),
-                // const Icon(
-                //   Icons.more_vert,
-                //   color: Colors.black,
-                // ),
+                GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        useRootNavigator: false,
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: ListView(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shrinkWrap: true,
+                                children: [
+                                  '刪除',
+                                ]
+                                    .map(
+                                      (e) => InkWell(
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 16),
+                                            child: Text(e),
+                                          ),
+                                          onTap: () {
+                                            deletePost(
+                                              widget.postData.id,
+                                            );
+                                            // remove the dialog box
+                                            Navigator.of(context).pop();
+                                          }),
+                                    )
+                                    .toList()),
+                          );
+                        },
+                      );
+                    },
+                    child: const Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
+                    )),
               ],
             ),
           ),
@@ -85,8 +111,16 @@ class _postWidgetState extends State<postWidget> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    SizedBox(
+                    Container(
                       width: double.infinity,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black38,
+                              spreadRadius: 0,
+                              blurRadius: 10),
+                        ],
+                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
                         child: Image.network(
@@ -181,14 +215,16 @@ class _postWidgetState extends State<postWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 40.0, bottom: 5.0),
-            child: Row(
+            padding:
+                const EdgeInsets.only(left: 40.0, bottom: 5.0, right: 40.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 UserNicknameWidget(widget.postData['poster']),
                 const SizedBox(
-                  width: 5,
+                  height: 5,
                 ),
-                Text(widget.postData['content'].toString())
+                Text(widget.postData['content'].toString(), softWrap: true)
               ],
             ),
           ),

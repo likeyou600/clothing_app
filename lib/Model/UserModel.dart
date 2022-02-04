@@ -3,15 +3,18 @@ import 'dart:convert';
 class UserModel {
   String uid;
   String nickname;
+  String userpic;
   UserModel({
     required this.uid,
     required this.nickname,
+    required this.userpic,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'nickname': nickname,
+      'userpic': userpic,
     };
   }
 
@@ -19,6 +22,7 @@ class UserModel {
     return UserModel(
       uid: map['uid'] ?? '',
       nickname: map['nickname'] ?? '',
+      userpic: map['userpic'] ?? '',
     );
   }
 

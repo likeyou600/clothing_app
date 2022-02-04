@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,11 @@ import '../Controller/AuthController.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await FirebaseFirestore.instance.terminate();
+  FirebaseFirestore.instance.settings = Settings(
+    persistenceEnabled: false,
+  );
+  await FirebaseFirestore.instance.clearPersistence();
   await Firebase.initializeApp();
   runApp(Auth());
 }
@@ -64,6 +70,7 @@ class _AuthState extends State<Auth> {
                                     .then((value) => createUser(UserModel(
                                           uid: (value.user?.uid).toString(),
                                           nickname: nicknameController.text,
+                                          userpic: '',
                                         )));
 
                                 errorMessage = '';
@@ -87,6 +94,7 @@ class _AuthState extends State<Auth> {
                                         email: emailController.text,
                                         password: passwordController.text);
                                 errorMessage = '';
+
                                 Navigator.of(context)
                                     .pushReplacementNamed('/community');
                               } on FirebaseAuthException catch (error) {

@@ -1,11 +1,18 @@
+import 'dart:developer';
+
+import 'package:clothing_app/View/sendpost.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../Controller/ImageController.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Controller/PostImageController.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(upload());
 }
 
@@ -34,9 +41,11 @@ class _uploadState extends State<upload> {
                 elevation: 5.0,
                 height: 60,
                 onPressed: () async {
-                  getImage();
-                  await Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/post', (Route<dynamic> route) => false);
+                  final imgurl = await getImage();
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return sendpost(imgurl);
+                  }));
                 },
                 child: const Text(
                   "  Get image",
@@ -50,6 +59,7 @@ class _uploadState extends State<upload> {
               ElevatedButton(
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
+
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         '/auth', (Route<dynamic> route) => false);
                     setState(() {});
