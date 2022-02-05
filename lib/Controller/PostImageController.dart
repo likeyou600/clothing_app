@@ -58,5 +58,6 @@ Future savepictodb(String comment, String url) async {
       reported: false,
       postpics: [url],
       collections: [],
-      likes: []));
+      likes: [],
+      collections_number: 0));
 }

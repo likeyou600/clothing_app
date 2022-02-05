@@ -1,22 +1,20 @@
-import 'package:clothing_app/Widget/rank_postWidget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:clothing_app/Widget/notification_click_postWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class collection_postPage extends StatefulWidget {
+class notification_click_postpage extends StatefulWidget {
+  final post_id;
+  notification_click_postpage(this.post_id);
+
   @override
-  _collection_postPageState createState() => _collection_postPageState();
+  _notification_click_postpageState createState() =>
+      _notification_click_postpageState();
 }
 
-class _collection_postPageState extends State<collection_postPage> {
+class _notification_click_postpageState
+    extends State<notification_click_postpage> {
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-    final Stream<QuerySnapshot> posts = FirebaseFirestore.instance
-        .collection('posts')
-        .where('collections', arrayContainsAny: [user!.uid])
-        .orderBy('publish_time', descending: true)
-        .snapshots();
     return MaterialApp(
         home: Scaffold(
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),
@@ -27,23 +25,21 @@ class _collection_postPageState extends State<collection_postPage> {
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
           title: Text("貼文")),
       body: Container(
-        child: StreamBuilder<QuerySnapshot>(
-          stream: posts,
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        child: FutureBuilder(
+          future: getpic(widget.post_id),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
               return Center(child: Text('loading'));
             }
             final posts_data = snapshot.requireData;
 
             return ListView.builder(
-              itemCount: posts_data.size,
+              itemCount: 1,
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               physics: ScrollPhysics(),
               itemBuilder: (context, index) {
-                var posts = posts_data.docs[index];
-
-                return rank_postWidget(posts);
+                return notification_click_postWidget(posts_data);
               },
             );
           },
@@ -51,4 +47,10 @@ class _collection_postPageState extends State<collection_postPage> {
       ),
     ));
   }
+}
+
+getpic(String post_id) async {
+  DocumentSnapshot posts =
+      await FirebaseFirestore.instance.collection('posts').doc(post_id).get();
+  return posts;
 }

@@ -1,0 +1,123 @@
+import 'package:clothing_app/Controller/AuthController.dart';
+import 'package:clothing_app/Controller/NotificationController.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:flutter/material.dart';
+
+import 'notification_click_postpage.dart';
+
+class notification extends StatefulWidget {
+  notification({Key? key}) : super(key: key);
+
+  @override
+  State<notification> createState() => _notificationState();
+}
+
+class _notificationState extends State<notification> {
+  User? user = FirebaseAuth.instance.currentUser;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(232, 215, 199, 1),
+      appBar: AppBar(
+          backgroundColor: Color.fromRGBO(174, 221, 239, 1), title: Text("動態")),
+      body: Center(
+          child: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('comments')
+            .where('poster', isEqualTo: user!.uid)
+            .orderBy('comment_time', descending: true)
+            .get(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView.builder(
+              itemCount: (snapshot.data! as dynamic).docs.length,
+              scrollDirection: Axis.vertical,
+              physics: ScrollPhysics(),
+              // shrinkWrap: true,
+              itemBuilder: (context, index) {
+                DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
+
+                if (snap['poster'] != snap['uid']) {
+                  DateTime comment_time =
+                      DateTime.fromMillisecondsSinceEpoch(snap['comment_time']);
+
+                  var difference =
+                      DateTime.now().difference(comment_time).inSeconds;
+                  var out = '';
+                  if (difference > 86400) {
+                    difference = DateTime.now().difference(comment_time).inDays;
+                    out = difference.toString() + "天前";
+                  } else if (difference > 3600) {
+                    difference =
+                        DateTime.now().difference(comment_time).inHours;
+                    out = difference.toString() + "小時前";
+                  } else if (difference > 60) {
+                    difference =
+                        DateTime.now().difference(comment_time).inMinutes;
+                    out = difference.toString() + "分鐘前";
+                  } else {
+                    out = difference.toString() + "秒前";
+                  }
+                  return ListTile(
+                      leading: UserPicWidget(snap['uid'], 20),
+                      title: Row(
+                        children: [
+                          UserNicknameWidget(snap['uid']),
+                          Text(" 留言回應了 ："),
+                          Expanded(
+                              child: Text(snap['comment'],
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis)),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  return notification_click_postpage(
+                                      snap['post_id']);
+                                }));
+                              },
+                              child: SizedBox(
+                                height: 60.0,
+                                width: 60.0,
+                                child: AspectRatio(
+                                  aspectRatio: 487 / 451,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            alignment:
+                                                FractionalOffset.topCenter,
+                                            image: NetworkImage(
+                                                snap['postpics'][0])
+                                            // MemoryImage(_file!)
+                                            )),
+                                  ),
+                                ),
+                              )),
+                        ],
+                      ),
+                      subtitle: Text(out));
+                } else {
+                  return Container();
+                }
+              });
+        },
+      )),
+    );
+  }
+}

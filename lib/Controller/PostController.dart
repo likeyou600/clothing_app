@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:clothing_app/Model/CommentModel.dart';
 import 'package:clothing_app/Model/PostModel.dart';
-import 'package:clothing_app/View/comment.dart';
 import 'package:clothing_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,11 +66,13 @@ collectionpost(String post_id) async {
   if ((doc.data()! as dynamic)['collections'].contains(user!.uid)) {
     await posts.doc(post_id).update({
       'collections': FieldValue.arrayRemove([user!.uid]),
+      'collections_number': FieldValue.increment(-1)
     });
   } else {
     await posts.doc(post_id).update({
       'collections':
           FieldValue.arrayUnion([user!.uid]), //因欄位是 Array 資料型別時 故採用FieldValue
+      'collections_number': FieldValue.increment(1)
     });
   }
 }

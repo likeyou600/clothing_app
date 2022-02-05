@@ -67,7 +67,8 @@ class _commentState extends State<comment> {
                                       child: Container(
                                           child: ListTile(
                                               leading:
-                                                  UserPicWidget(user!.uid, 20),
+                                                  UserPicWidget(
+                                                  widget.postData['poster'], 20),
                                               title: UserNicknameWidget(
                                                   widget.postData['poster']),
                                               subtitle: Text(
@@ -208,7 +209,9 @@ class _commentState extends State<comment> {
                                   });
                                   commentpost(CommentModel(
                                       post_id: widget.postData.id,
-                                      uid: widget.postData['poster'],
+                                      poster: widget.postData['poster'],
+                                      postpics: widget.postData['postpics'],
+                                      uid: user!.uid,
                                       comment: commentController.text,
                                       comment_time: DateTime.now(),
                                       likes: []));

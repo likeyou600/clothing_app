@@ -1,14 +1,11 @@
-import 'package:clothing_app/View/community_collection.dart';
 import 'package:clothing_app/View/community_profile.dart';
-import 'package:clothing_app/View/sendpost.dart';
+import 'package:clothing_app/View/community_ranking.dart';
+import 'package:clothing_app/View/notification.dart';
 import 'package:clothing_app/View/upload.dart';
 import 'package:clothing_app/View/ALL_postpage.dart';
-import 'package:clothing_app/test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'comment.dart';
 
 User? user = FirebaseAuth.instance.currentUser;
 
@@ -21,9 +18,9 @@ class _communityState extends State<community> {
   int _selectedIndex = 0;
   static final List<Widget> _communityView = [
     const ALL_postpage(),
+    notification(),
     const upload(),
-    const upload(),
-    community_collection(user!.uid),
+    community_ranking(),
     community_profile(user!.uid),
   ]; //要切到的頁面
 
@@ -90,7 +87,7 @@ List<NavBarModel> _navBarItem = [
   NavBarModel(
     icon: "assets/favorite.svg",
     activeIcon: "assets/favorite_2.svg",
-    title: "Notifications",
+    title: "search",
   ),
   NavBarModel(
     icon: "assets/add.svg",
@@ -100,7 +97,7 @@ List<NavBarModel> _navBarItem = [
   NavBarModel(
     icon: "assets/bookmark.svg",
     activeIcon: "assets/bookmark.svg",
-    title: "Notifications",
+    title: "bookmark",
   ),
   NavBarModel(
     icon: "assets/account.svg",

@@ -1,8 +1,6 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/View/comment.dart';
+import 'package:clothing_app/View/community_profile_anothersee.dart';
 import 'package:clothing_app/Widget/like_animation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,22 +8,22 @@ import 'package:flutter_svg/svg.dart';
 import '../Controller/PostController.dart';
 import '../constants.dart';
 
-class User_postWidget extends StatefulWidget {
+class notification_click_postWidget extends StatefulWidget {
   final postData;
 
-  User_postWidget(this.postData);
+  notification_click_postWidget(this.postData);
   @override
-  _User_postWidgetState createState() => _User_postWidgetState();
+  _notification_click_postWidgetState createState() =>
+      _notification_click_postWidgetState();
 }
 
-class _User_postWidgetState extends State<User_postWidget> {
+class _notification_click_postWidgetState
+    extends State<notification_click_postWidget> {
   bool isLikeAnimating = false;
 
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-    final check = user!.uid == widget.postData['poster'];
-
     DateTime publish_time =
         DateTime.fromMillisecondsSinceEpoch(widget.postData['publish_time']);
 
@@ -58,50 +56,55 @@ class _User_postWidgetState extends State<User_postWidget> {
               children: <Widget>[
                 UserPicWidget(widget.postData['poster'], 20),
                 const SizedBox(width: 12.0),
-                UserNicknameWidget(widget.postData['poster']),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return community_profile_anothersee(
+                          widget.postData['poster']);
+                    }));
+                  },
+                  child: UserNicknameWidget(widget.postData['poster']),
+                ),
                 Expanded(child: Container()),
-                (check)
-                    ? GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            useRootNavigator: false,
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                child: ListView(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
-                                    shrinkWrap: true,
-                                    children: [
-                                      '刪除',
-                                    ]
-                                        .map(
-                                          (e) => InkWell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 12,
-                                                        horizontal: 16),
-                                                child: Text(e),
-                                              ),
-                                              onTap: () {
-                                                deletePost(
-                                                  widget.postData.id,
-                                                );
-                                                // remove the dialog box
-                                                Navigator.of(context).pop();
-                                              }),
-                                        )
-                                        .toList()),
-                              );
-                            },
+                GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        useRootNavigator: false,
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: ListView(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shrinkWrap: true,
+                                children: [
+                                  '刪除',
+                                ]
+                                    .map(
+                                      (e) => InkWell(
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 16),
+                                            child: Text(e),
+                                          ),
+                                          onTap: () {
+                                            deletePost(
+                                              widget.postData.id,
+                                            );
+                                            // remove the dialog box
+                                            Navigator.of(context).pop();
+                                          }),
+                                    )
+                                    .toList()),
                           );
                         },
-                        child: const Icon(
-                          Icons.more_vert,
-                          color: Colors.black,
-                        ))
-                    : SizedBox()
+                      );
+                    },
+                    child: const Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
+                    )),
               ],
             ),
           ),
@@ -179,7 +182,7 @@ class _User_postWidgetState extends State<User_postWidget> {
                           child: SvgPicture.asset(
                             "assets/favorite.svg",
                             width: 27.0,
-                            color: widget.postData['likes'].contains(user.uid)
+                            color: widget.postData['likes'].contains(user!.uid)
                                 ? Colors.red
                                 : Colors.black,
                           ),

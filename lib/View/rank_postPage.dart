@@ -1,39 +1,28 @@
-import 'package:clothing_app/View/notification.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:clothing_app/Widget/rank_postWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../Widget/ALL_postWidget.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MaterialApp(home: ALL_postpage()));
-}
-
-class ALL_postpage extends StatefulWidget {
-  const ALL_postpage({Key? key}) : super(key: key);
-
+class rank_postPage extends StatefulWidget {
   @override
-  _ALL_postpageState createState() => _ALL_postpageState();
+  _rank_postPageState createState() => _rank_postPageState();
 }
 
-CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-final Stream<QuerySnapshot> posts = FirebaseFirestore.instance
-    .collection('posts')
-    .orderBy('publish_time', descending: true)
-    .snapshots();
-
-class _ALL_postpageState extends State<ALL_postpage> {
+class _rank_postPageState extends State<rank_postPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final Stream<QuerySnapshot> posts = FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('collections_number', descending: true)
+        .snapshots();
+    return MaterialApp(
+        home: Scaffold(
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),
       appBar: AppBar(
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context)),
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
-          title: Text("人雲衣雲")),
+          title: Text("貼文")),
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
           stream: posts,
@@ -51,12 +40,12 @@ class _ALL_postpageState extends State<ALL_postpage> {
               itemBuilder: (context, index) {
                 var posts = posts_data.docs[index];
 
-                return ALL_postWidget(posts);
+                return rank_postWidget(posts);
               },
             );
           },
         ),
       ),
-    );
+    ));
   }
 }

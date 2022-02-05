@@ -7,15 +7,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class community_profile extends StatefulWidget {
+class community_profile_anothersee extends StatefulWidget {
   final uid;
 
-  community_profile(this.uid);
+  community_profile_anothersee(this.uid);
   @override
-  State<community_profile> createState() => _community_profileState();
+  State<community_profile_anothersee> createState() =>
+      _community_profile_anotherseeState();
 }
 
-class _community_profileState extends State<community_profile> {
+class _community_profile_anotherseeState
+    extends State<community_profile_anothersee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,17 +47,6 @@ class _community_profileState extends State<community_profile> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 postnumberWidget(widget.uid),
-                                IconButton(
-                                    icon: SvgPicture.asset(
-                                      "assets/bookmark.svg",
-                                      width: 24.0,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (context) {
-                                        return community_collection(user!.uid);
-                                      }));
-                                    }),
                               ]),
                         ],
                       ),

@@ -10,6 +10,7 @@ class PostModel {
   List postpics;
   List likes;
   List collections;
+  int collections_number;
   PostModel({
     required this.poster,
     required this.content,
@@ -18,7 +19,7 @@ class PostModel {
     required this.postpics,
     required this.likes,
     required this.collections,
-    poster_nickname,
+    required this.collections_number,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,6 +31,7 @@ class PostModel {
       'postpics': postpics,
       'likes': likes,
       'collections': collections,
+      'collections_number': collections_number,
     };
   }
 
@@ -42,6 +44,7 @@ class PostModel {
       postpics: List.from(map['postpics']),
       likes: List.from(map['likes']),
       collections: List.from(map['collections']),
+      collections_number: map['collections_number']?.toInt() ?? 0,
     );
   }
 

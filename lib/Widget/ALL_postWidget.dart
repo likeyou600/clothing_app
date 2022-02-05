@@ -1,5 +1,6 @@
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/View/comment.dart';
+import 'package:clothing_app/View/community_profile_anothersee.dart';
 import 'package:clothing_app/Widget/like_animation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,16 @@ class _ALL_postWidgetState extends State<ALL_postWidget> {
               children: <Widget>[
                 UserPicWidget(widget.postData['poster'], 20),
                 const SizedBox(width: 12.0),
-                UserNicknameWidget(widget.postData['poster']),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return community_profile_anothersee(
+                          widget.postData['poster']);
+                    }));
+                  },
+                  child: UserNicknameWidget(widget.postData['poster']),
+                ),
                 Expanded(child: Container()),
                 GestureDetector(
                     onTap: () {
