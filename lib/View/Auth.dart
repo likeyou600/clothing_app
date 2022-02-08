@@ -71,6 +71,7 @@ class _AuthState extends State<Auth> {
                                           uid: (value.user?.uid).toString(),
                                           nickname: nicknameController.text,
                                           userpic: '',
+                                          admin: false,
                                         )));
 
                                 errorMessage = '';

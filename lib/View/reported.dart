@@ -1,31 +1,30 @@
 import 'package:clothing_app/Controller/PostController.dart';
 
 import 'package:clothing_app/View/collection_postPage.dart';
+import 'package:clothing_app/View/repoted_postPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class community_collection extends StatefulWidget {
-  final uid;
-
-  community_collection(this.uid);
+class reported extends StatefulWidget {
   @override
-  State<community_collection> createState() => _community_collectionState();
+  State<reported> createState() => _reportedState();
 }
 
-class _community_collectionState extends State<community_collection> {
+class _reportedState extends State<reported> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),
       appBar: AppBar(
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
-          title: Text("收藏的貼文")),
+          title: Text("被檢舉的貼文們")),
       body: ListView(
         children: [
           FutureBuilder(
             future: FirebaseFirestore.instance
                 .collection('posts')
-                .where('collections', arrayContainsAny: [user!.uid]).get(),
+                .where('reported', isEqualTo: true)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -51,7 +50,7 @@ class _community_collectionState extends State<community_collection> {
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (context) {
-                              return collection_postPage(index);
+                              return reported_postPage(index);
                             }));
                           },
                           child: Image(

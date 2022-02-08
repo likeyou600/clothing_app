@@ -1,6 +1,7 @@
 import 'package:clothing_app/View/community_profile.dart';
 import 'package:clothing_app/View/community_ranking.dart';
 import 'package:clothing_app/View/notification.dart';
+import 'package:clothing_app/View/demo.dart';
 import 'package:clothing_app/View/upload.dart';
 import 'package:clothing_app/View/ALL_postpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,7 @@ class _communityState extends State<community> {
   static final List<Widget> _communityView = [
     const ALL_postpage(),
     notification(),
-    const upload(),
+    demo(),
     community_ranking(),
     community_profile(user!.uid),
   ]; //要切到的頁面
@@ -69,7 +70,7 @@ class _communityState extends State<community> {
                       f.activeIcon,
                       width: 24.0,
                     ),
-                    title: Text(f.title),
+                    label: f.title,
                   ),
                 )
                 .toList(),

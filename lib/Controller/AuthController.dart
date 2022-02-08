@@ -1,4 +1,6 @@
+import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Model/UserModel.dart';
+import 'package:clothing_app/View/reported.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -75,6 +77,50 @@ class UserPicWidget extends StatelessWidget {
                 backgroundImage: NetworkImage(snapshot.data),
                 radius: radius,
               );
+            return Container();
+        }
+      },
+    );
+  }
+}
+//取得檢舉按鈕
+
+Future getuseradmin() async {
+  DocumentSnapshot userDoc =
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+  return userDoc;
+}
+
+class reportedWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: getuseradmin(),
+      initialData: "",
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return Container();
+            break;
+          case ConnectionState.done:
+            if (snapshot.data != null) {
+              if (snapshot.data['admin'] == true) {
+                return IconButton(
+                    icon: const Icon(
+                      Icons.report_gmailerrorred_rounded,
+                      size: 35,
+                      color: Colors.black87,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return reported();
+                      }));
+                    });
+              }
+            }
             return Container();
         }
       },

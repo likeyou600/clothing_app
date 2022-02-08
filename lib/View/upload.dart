@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:clothing_app/View/sendpost.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:clothing_app/View/demo.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../Controller/PostImageController.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,10 +39,14 @@ class _uploadState extends State<upload> {
                 elevation: 5.0,
                 height: 60,
                 onPressed: () async {
-                  final imgurl = await getImage();
+                  // final imgurl = await getImage();
+                  // Navigator.of(context)
+                  //     .push(MaterialPageRoute(builder: (context) {
+                  //   return sendpost(imgurl);
+                  // }));
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return sendpost(imgurl);
+                    return demo();
                   }));
                 },
                 child: const Text(
@@ -56,15 +58,6 @@ class _uploadState extends State<upload> {
                 ),
                 color: Colors.blue,
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
-
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/auth', (Route<dynamic> route) => false);
-                    setState(() {});
-                  },
-                  child: const Text('Log out'))
             ])),
       ),
     );

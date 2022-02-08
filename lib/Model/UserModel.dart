@@ -4,10 +4,12 @@ class UserModel {
   String uid;
   String nickname;
   String userpic;
+  bool admin;
   UserModel({
     required this.uid,
     required this.nickname,
     required this.userpic,
+    required this.admin,
   });
 
   Map<String, dynamic> toMap() {
@@ -15,6 +17,7 @@ class UserModel {
       'uid': uid,
       'nickname': nickname,
       'userpic': userpic,
+      'admin': admin,
     };
   }
 
@@ -23,6 +26,7 @@ class UserModel {
       uid: map['uid'] ?? '',
       nickname: map['nickname'] ?? '',
       userpic: map['userpic'] ?? '',
+      admin: map['admin'] ?? false,
     );
   }
 

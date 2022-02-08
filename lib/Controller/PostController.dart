@@ -34,6 +34,11 @@ Future reportedpost(String postId) async {
   await posts.doc(postId).update({'reported': true});
 }
 
+//取消檢舉
+Future canclereportedpost(String postId) async {
+  await posts.doc(postId).update({'reported': false});
+}
+
 //按貼文讚
 likepost(String post_id) async {
   DocumentSnapshot doc = await posts.doc(post_id).get();

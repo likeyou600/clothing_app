@@ -1,23 +1,25 @@
 import 'package:clothing_app/Widget/rank_postWidget.dart';
+import 'package:clothing_app/Widget/reported_postWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class collection_postPage extends StatefulWidget {
+class reported_postPage extends StatefulWidget {
   final index;
-  collection_postPage(this.index);
+  reported_postPage(this.index);
   @override
-  _collection_postPageState createState() => _collection_postPageState();
+  _reported_postPageState createState() => _reported_postPageState();
 }
 
-class _collection_postPageState extends State<collection_postPage> {
+class _reported_postPageState extends State<reported_postPage> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     final Stream<QuerySnapshot> posts = FirebaseFirestore.instance
         .collection('posts')
-        .where('collections', arrayContainsAny: [user!.uid]).snapshots();
+        .where('reported', isEqualTo: true)
+        .snapshots();
     ItemScrollController _scrollController = ItemScrollController();
 
     Future.delayed(const Duration(milliseconds: 200), () {
@@ -31,7 +33,7 @@ class _collection_postPageState extends State<collection_postPage> {
               icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context)),
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
-          title: Text("貼文")),
+          title: Text("被檢舉的貼文們")),
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
           stream: posts,
@@ -50,7 +52,7 @@ class _collection_postPageState extends State<collection_postPage> {
               itemBuilder: (context, index) {
                 var posts = posts_data.docs[index];
 
-                return rank_postWidget(posts);
+                return reported_postWidget(posts);
               },
             );
           },

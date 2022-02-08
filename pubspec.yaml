@@ -47,6 +47,8 @@ dependencies:
   google_fonts: ^2.2.0
   get: ^4.6.1
   shared_preferences: ^2.0.12
+  scrollable_positioned_list: ^0.2.3
+  wechat_assets_picker: ^6.3.1
 
 dev_dependencies:
   flutter_test:

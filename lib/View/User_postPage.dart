@@ -2,10 +2,12 @@ import 'package:clothing_app/Widget/User_postWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class User_postpage extends StatefulWidget {
   final String poster;
-  User_postpage(this.poster);
+  final index;
+  User_postpage(this.poster, this.index);
   @override
   _User_postpageState createState() => _User_postpageState();
 }
@@ -20,6 +22,11 @@ class _User_postpageState extends State<User_postpage> {
         .where('poster', isEqualTo: widget.poster)
         .orderBy('publish_time', descending: true)
         .snapshots();
+    ItemScrollController _scrollController = ItemScrollController();
+
+    Future.delayed(const Duration(milliseconds: 200), () {
+      _scrollController.jumpTo(index: widget.index);
+    });
 
     User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
@@ -40,7 +47,8 @@ class _User_postpageState extends State<User_postpage> {
             }
             final posts_data = snapshot.requireData;
 
-            return ListView.builder(
+            return ScrollablePositionedList.builder(
+              itemScrollController: _scrollController,
               itemCount: posts_data.size,
               scrollDirection: Axis.vertical,
               shrinkWrap: true,

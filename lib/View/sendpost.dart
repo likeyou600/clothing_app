@@ -18,6 +18,8 @@ class _sendpostState extends State<sendpost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(232, 215, 199, 1),
+
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(174, 221, 239, 1),
         leading: IconButton(
@@ -31,7 +33,7 @@ class _sendpostState extends State<sendpost> {
         actions: <Widget>[
           TextButton(
             onPressed: () => [
-              savepictodb(_descriptionController.text, widget.imgurl),
+              // savepictodb(_descriptionController.text, widget.imgurl),
               Navigator.of(context).pushNamedAndRemoveUntil(
                   '/community', (Route<dynamic> route) => false)
             ],

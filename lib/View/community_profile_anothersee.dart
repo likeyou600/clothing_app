@@ -97,7 +97,7 @@ class _community_profile_anotherseeState
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (context) {
-                              return User_postpage(snap['poster']);
+                              return User_postpage(snap['poster'], index);
                             }));
                           },
                           child: Image(

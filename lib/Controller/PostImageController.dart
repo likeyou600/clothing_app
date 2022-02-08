@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart ' as p;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 final ImagePicker image = ImagePicker();
 String? imageUrl;
@@ -48,15 +49,24 @@ Future _uploadFile(String path) async {
   return fileUrl;
 }
 
-Future savepictodb(String comment, String url) async {
+Future savepictodb(String comment, List<AssetEntity> assets) async {
+  List url = [];
   DocumentSnapshot userDoc =
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+  for (var index = 0; index < assets.length; index++) {
+    AssetEntity? asset = assets[index];
+    File? files = await asset.file;
+    files = await compressImage(files!.path, 90);
+    log(files.path);
+    url.add(await _uploadFile(files.path));
+  }
+  log(url.toString());
   createPost(PostModel(
       poster: user!.uid,
       content: comment,
       publish_time: DateTime.now(),
       reported: false,
-      postpics: [url],
+      postpics: url,
       collections: [],
       likes: [],
       collections_number: 0));

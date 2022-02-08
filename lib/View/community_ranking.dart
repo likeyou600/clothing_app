@@ -49,7 +49,7 @@ class _community_rankingState extends State<community_ranking> {
                         onTap: () {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
-                            return rank_postPage();
+                            return rank_postPage(index);
                           }));
                         },
                         child: Card(

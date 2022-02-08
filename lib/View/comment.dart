@@ -1,9 +1,12 @@
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Model/CommentModel.dart';
+import 'package:clothing_app/View/community_profile_anothersee.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'comment_likepage.dart';
 
 class comment extends StatefulWidget {
   final postData;
@@ -66,11 +69,22 @@ class _commentState extends State<comment> {
                                       ),
                                       child: Container(
                                           child: ListTile(
-                                              leading:
-                                                  UserPicWidget(
-                                                  widget.postData['poster'], 20),
-                                              title: UserNicknameWidget(
-                                                  widget.postData['poster']),
+                                              leading: UserPicWidget(
+                                                  widget.postData['poster'],
+                                                  20),
+                                              title: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) {
+                                                    return community_profile_anothersee(
+                                                        widget.postData[
+                                                            'poster']);
+                                                  }));
+                                                },
+                                                child: UserNicknameWidget(
+                                                    widget.postData['poster']),
+                                              ),
                                               subtitle: Text(
                                                   widget.postData['content']
                                                       .toString(),
@@ -135,8 +149,23 @@ class _commentState extends State<comment> {
                                                 20),
                                             title: Row(
                                               children: [
-                                                UserNicknameWidget(comments_data
-                                                    .docs[index]['uid']),
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                        return community_profile_anothersee(
+                                                            comments_data
+                                                                    .docs[index]
+                                                                ['uid']);
+                                                      }));
+                                                    },
+                                                    child: UserNicknameWidget(
+                                                        comments_data
+                                                                .docs[index]
+                                                            ['uid'])),
+
                                                 //  style: const TextStyle(
                                                 //     fontSize: 20,
                                                 //     color: Colors.red,
@@ -163,14 +192,26 @@ class _commentState extends State<comment> {
                                                 const SizedBox(
                                                   width: 10,
                                                 ),
-
-                                                Text(
-                                                  comments_data
-                                                          .docs[index]['likes']
-                                                          .length
-                                                          .toString() +
-                                                      "個讚",
-                                                )
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) {
+                                                        return comment_likepage(
+                                                            comments_data
+                                                                .docs[index]
+                                                                .id);
+                                                      }));
+                                                    },
+                                                    child: Text(
+                                                      comments_data
+                                                              .docs[index]
+                                                                  ['likes']
+                                                              .length
+                                                              .toString() +
+                                                          "個讚",
+                                                    ))
                                               ],
                                             ),
                                             trailing: GestureDetector(

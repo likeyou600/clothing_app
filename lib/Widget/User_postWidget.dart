@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/View/comment.dart';
+import 'package:clothing_app/View/likepage.dart';
 import 'package:clothing_app/Widget/like_animation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,16 @@ class _User_postWidgetState extends State<User_postWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Widget imageWidget(int index) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.network(
+          widget.postData['postpics'][index],
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
     User? user = FirebaseAuth.instance.currentUser;
     final check = user!.uid == widget.postData['poster'];
 
@@ -127,16 +138,27 @@ class _User_postWidgetState extends State<User_postWidget> {
                           BoxShadow(
                               color: Colors.black38,
                               spreadRadius: 0,
-                              blurRadius: 10),
+                              blurRadius: 15),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          widget.postData['postpics'][0],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 250.0,
+                          child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: widget.postData['postpics'].length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 5.0, vertical: 10.0),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      imageWidget(index),
+                                    ],
+                                  ),
+                                );
+                              })),
                     ),
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
@@ -217,12 +239,19 @@ class _User_postWidgetState extends State<User_postWidget> {
                 ),
               )),
           Padding(
-            padding: const EdgeInsets.only(left: 40.0, bottom: 5.0),
-            child: Text(
-              widget.postData['likes'].length.toString() + " 個讚",
-              style: kTitleStyle,
-            ),
-          ),
+              padding: const EdgeInsets.only(left: 40.0, bottom: 5.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return likepage(widget.postData.id);
+                  }));
+                },
+                child: Text(
+                  widget.postData['likes'].length.toString() + " 個讚",
+                  style: kTitleStyle,
+                ),
+              )),
           Padding(
             padding:
                 const EdgeInsets.only(left: 40.0, bottom: 5.0, right: 40.0),

@@ -1,6 +1,7 @@
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/View/comment.dart';
 import 'package:clothing_app/View/community_profile_anothersee.dart';
+import 'package:clothing_app/View/likepage.dart';
 import 'package:clothing_app/Widget/like_animation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -221,10 +222,17 @@ class _notification_click_postWidgetState
               )),
           Padding(
             padding: const EdgeInsets.only(left: 40.0, bottom: 5.0),
-            child: Text(
-              widget.postData['likes'].length.toString() + " 個讚",
-              style: kTitleStyle,
-            ),
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return likepage(widget.postData.id);
+                  }));
+                },
+                child: Text(
+                  widget.postData['likes'].length.toString() + " 個讚",
+                  style: kTitleStyle,
+                )),
           ),
           Padding(
             padding:

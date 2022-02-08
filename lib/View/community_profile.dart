@@ -3,7 +3,9 @@ import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Controller/UserImageController.dart';
 import 'package:clothing_app/View/User_postPage.dart';
 import 'package:clothing_app/View/community_collection.dart';
+import 'package:clothing_app/View/reported.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -22,7 +24,26 @@ class _community_profileState extends State<community_profile> {
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),
       appBar: AppBar(
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
-          title: UserNicknameWidget(widget.uid)),
+          title: UserNicknameWidget(widget.uid),
+          centerTitle: false,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/auth', (Route<dynamic> route) => false);
+                setState(() {});
+              },
+              child: const Text(
+                "登出",
+                style: TextStyle(
+                    color: Colors.blueAccent,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0),
+              ),
+            )
+          ]),
       body: ListView(
         children: [
           Padding(
@@ -56,6 +77,7 @@ class _community_profileState extends State<community_profile> {
                                         return community_collection(user!.uid);
                                       }));
                                     }),
+                                reportedWidget()
                               ]),
                         ],
                       ),
@@ -106,7 +128,7 @@ class _community_profileState extends State<community_profile> {
                           onTap: () {
                             Navigator.of(context)
                                 .push(MaterialPageRoute(builder: (context) {
-                              return User_postpage(snap['poster']);
+                              return User_postpage(snap['poster'], index);
                             }));
                           },
                           child: Image(
