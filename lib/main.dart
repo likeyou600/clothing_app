@@ -1,5 +1,6 @@
 import 'package:clothing_app/View/comment.dart';
 import 'package:clothing_app/View/community.dart';
+import 'package:clothing_app/View/demo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +39,7 @@ class _MyAppState extends State<MyApp> {
         '/auth': (BuildContext context) => Auth(),
         '/upload': (BuildContext context) => upload(),
         '/community': (BuildContext context) => community(),
+        '/demo': (BuildContext context) => demo(),
       },
     );
   }

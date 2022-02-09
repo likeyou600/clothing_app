@@ -4,9 +4,11 @@ import 'dart:typed_data';
 
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:path/path.dart ' as p;
 
 import '../Controller/PostController.dart';
 import '../Controller/PostImageController.dart';
@@ -26,6 +28,11 @@ class _demoState extends State<demo> {
         pathThumbSize: 84,
         gridCount: 4,
         selectedAssets: assets,
+        pickerTheme: ThemeData(
+          primaryColor: Color.fromRGBO(174, 221, 239, 1),
+          accentColor: Color.fromRGBO(232, 215, 199, 1),
+          canvasColor: Color.fromRGBO(232, 215, 199, 1),
+        ),
         requestType: RequestType.common);
     if (result != null) {
       setState(() {
@@ -39,8 +46,7 @@ class _demoState extends State<demo> {
         onTap: () async {
           AssetEntity? asset = assets[index];
           File? files = await asset.file;
-          log(assets[index].toString());
-          log(files.toString());
+          log(assets.toString());
           File? output = await ImageCropper.cropImage(
               sourcePath: files!.path,
               aspectRatioPresets: [
@@ -59,7 +65,17 @@ class _demoState extends State<demo> {
               iosUiSettings: const IOSUiSettings(
                 minimumAspectRatio: 1.0,
               ));
-// For your reference print the AppDoc directory
+          final Uint8List byteData = await output!.readAsBytes();
+          final AssetEntity? imageEntity =
+              await PhotoManager.editor.saveImage(byteData);
+          Fluttertoast.showToast(
+              msg: "裁切完成，請按上方+號，重新選擇圖片",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black45,
+              textColor: Colors.white,
+              fontSize: 16.0);
         },
         child: ClipRRect(
             borderRadius: BorderRadius.circular(6.0),
