@@ -1,5 +1,5 @@
 import 'package:clothing_app/Widget/rank_postWidget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:clothing_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -14,7 +14,6 @@ class collection_postPage extends StatefulWidget {
 class _collection_postPageState extends State<collection_postPage> {
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
     final Stream<QuerySnapshot> posts = FirebaseFirestore.instance
         .collection('posts')
         .where('collections', arrayContainsAny: [user!.uid]).snapshots();

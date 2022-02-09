@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../Model/UserModel.dart';
 import '../Controller/AuthController.dart';
+import '../main.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,6 +74,7 @@ class _AuthState extends State<Auth> {
                                           userpic: '',
                                           admin: false,
                                         )));
+                                user = FirebaseAuth.instance.currentUser;
 
                                 errorMessage = '';
                                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -95,6 +97,7 @@ class _AuthState extends State<Auth> {
                                         email: emailController.text,
                                         password: passwordController.text);
                                 errorMessage = '';
+                                user = FirebaseAuth.instance.currentUser;
 
                                 Navigator.of(context)
                                     .pushReplacementNamed('/community');

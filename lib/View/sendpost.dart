@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:clothing_app/Controller/AuthController.dart';
-import 'package:clothing_app/View/community.dart';
-import 'package:clothing_app/Controller/PostImageController.dart';
 import 'package:flutter/material.dart';
+import 'package:clothing_app/main.dart';
 
 class sendpost extends StatefulWidget {
   final String imgurl;

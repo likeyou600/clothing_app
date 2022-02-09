@@ -2,13 +2,10 @@ import 'package:clothing_app/View/community_profile.dart';
 import 'package:clothing_app/View/community_ranking.dart';
 import 'package:clothing_app/View/notification.dart';
 import 'package:clothing_app/View/demo.dart';
-import 'package:clothing_app/View/upload.dart';
 import 'package:clothing_app/View/ALL_postpage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-User? user = FirebaseAuth.instance.currentUser;
+import 'package:clothing_app/main.dart';
 
 class community extends StatefulWidget {
   @override
@@ -22,7 +19,7 @@ class _communityState extends State<community> {
     notification(),
     demo(),
     community_ranking(),
-    community_profile(user!.uid),
+    community_profile(),
   ]; //要切到的頁面
 
   void _onItemTapped(int index) {

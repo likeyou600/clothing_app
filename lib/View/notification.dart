@@ -1,12 +1,7 @@
-import 'dart:developer';
-
 import 'package:clothing_app/Controller/AuthController.dart';
-import 'package:clothing_app/Controller/PostController.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:clothing_app/main.dart';
 import 'package:flutter/material.dart';
-
 import 'community_profile_anothersee.dart';
 import 'notification_click_postpage.dart';
 
@@ -18,7 +13,6 @@ class notification extends StatefulWidget {
 }
 
 class _notificationState extends State<notification> {
-  User? user = FirebaseAuth.instance.currentUser;
   var check = 0;
   @override
   Widget build(BuildContext context) {

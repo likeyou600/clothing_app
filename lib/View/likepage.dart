@@ -1,11 +1,8 @@
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/View/community_profile_anothersee.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-
-import 'notification_click_postpage.dart';
 
 class likepage extends StatefulWidget {
   final post_id;
@@ -16,8 +13,6 @@ class likepage extends StatefulWidget {
 }
 
 class _likepageState extends State<likepage> {
-  User? user = FirebaseAuth.instance.currentUser;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

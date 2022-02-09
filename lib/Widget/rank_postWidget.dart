@@ -3,7 +3,7 @@ import 'package:clothing_app/View/comment.dart';
 import 'package:clothing_app/View/community_profile_anothersee.dart';
 import 'package:clothing_app/View/likepage.dart';
 import 'package:clothing_app/Widget/like_animation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:clothing_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../Controller/PostController.dart';
@@ -32,7 +32,6 @@ class _rank_postWidgetState extends State<rank_postWidget> {
       );
     }
 
-    User? user = FirebaseAuth.instance.currentUser;
     DateTime publish_time =
         DateTime.fromMillisecondsSinceEpoch(widget.postData['publish_time']);
 
@@ -231,9 +230,10 @@ class _rank_postWidgetState extends State<rank_postWidget> {
                       child: SvgPicture.asset(
                         "assets/bookmark.svg",
                         width: 20.0,
-                        color: widget.postData['collections'].contains(user.uid)
-                            ? Colors.red
-                            : Colors.black,
+                        color:
+                            widget.postData['collections'].contains(user!.uid)
+                                ? Colors.red
+                                : Colors.black,
                       ),
                     )
                   ],

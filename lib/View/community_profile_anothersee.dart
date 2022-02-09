@@ -2,10 +2,8 @@ import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Controller/UserImageController.dart';
 import 'package:clothing_app/View/User_postPage.dart';
-import 'package:clothing_app/View/community_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class community_profile_anothersee extends StatefulWidget {
   final uid;

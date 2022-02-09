@@ -1,4 +1,4 @@
-import 'package:clothing_app/Controller/PostController.dart';
+import 'package:clothing_app/main.dart';
 
 import 'package:clothing_app/View/collection_postPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

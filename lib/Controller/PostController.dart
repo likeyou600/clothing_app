@@ -1,16 +1,12 @@
-import 'dart:developer';
-
 import 'package:clothing_app/Model/CommentModel.dart';
 import 'package:clothing_app/Model/PostModel.dart';
 import 'package:clothing_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:clothing_app/main.dart';
 
 final posts = FirebaseFirestore.instance.collection('posts');
 final comments = FirebaseFirestore.instance.collection('comments');
-
-User? user = FirebaseAuth.instance.currentUser;
 
 //創立貼文
 Future createPost(PostModel postModel) async {

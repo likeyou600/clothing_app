@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'PostController.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart ' as p;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:clothing_app/main.dart';
 
 final ImagePicker image = ImagePicker();
 String? imageUrl;

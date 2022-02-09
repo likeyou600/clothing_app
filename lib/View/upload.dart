@@ -1,11 +1,6 @@
-import 'package:clothing_app/View/sendpost.dart';
 import 'package:clothing_app/View/demo.dart';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../Controller/PostImageController.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

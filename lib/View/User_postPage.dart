@@ -1,5 +1,4 @@
 import 'package:clothing_app/Widget/User_postWidget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -28,7 +27,6 @@ class _User_postpageState extends State<User_postpage> {
       _scrollController.jumpTo(index: widget.index);
     });
 
-    User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
         home: Scaffold(
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),

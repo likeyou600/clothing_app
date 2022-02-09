@@ -6,11 +6,9 @@ import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import 'package:path/path.dart ' as p;
+import 'package:clothing_app/main.dart';
 
-import '../Controller/PostController.dart';
 import '../Controller/PostImageController.dart';
 
 class demo extends StatefulWidget {

@@ -1,6 +1,3 @@
-import 'package:clothing_app/Controller/PostController.dart';
-
-import 'package:clothing_app/View/collection_postPage.dart';
 import 'package:clothing_app/View/repoted_postPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

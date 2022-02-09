@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
-import 'notification_click_postpage.dart';
-
 class comment_likepage extends StatefulWidget {
   final comment_id;
   comment_likepage(this.comment_id);
@@ -16,8 +14,6 @@ class comment_likepage extends StatefulWidget {
 }
 
 class _comment_likepageState extends State<comment_likepage> {
-  User? user = FirebaseAuth.instance.currentUser;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

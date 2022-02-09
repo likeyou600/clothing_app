@@ -1,8 +1,8 @@
-import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Model/UserModel.dart';
 import 'package:clothing_app/View/reported.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:clothing_app/main.dart';
 
 //創立用戶
 Future createUser(UserModel userModel) async {
@@ -119,6 +119,8 @@ class reportedWidget extends StatelessWidget {
                         return reported();
                       }));
                     });
+              } else {
+                return Container();
               }
             }
             return Container();

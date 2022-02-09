@@ -1,6 +1,4 @@
-import 'package:clothing_app/Widget/rank_postWidget.dart';
 import 'package:clothing_app/Widget/reported_postWidget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -15,7 +13,6 @@ class reported_postPage extends StatefulWidget {
 class _reported_postPageState extends State<reported_postPage> {
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
     final Stream<QuerySnapshot> posts = FirebaseFirestore.instance
         .collection('posts')
         .where('reported', isEqualTo: true)

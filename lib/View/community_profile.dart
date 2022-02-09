@@ -1,18 +1,17 @@
+import 'dart:developer';
+
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Controller/UserImageController.dart';
 import 'package:clothing_app/View/User_postPage.dart';
 import 'package:clothing_app/View/community_collection.dart';
-import 'package:clothing_app/View/reported.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:clothing_app/main.dart';
 
 class community_profile extends StatefulWidget {
-  final uid;
-
-  community_profile(this.uid);
   @override
   State<community_profile> createState() => _community_profileState();
 }
@@ -20,11 +19,12 @@ class community_profile extends StatefulWidget {
 class _community_profileState extends State<community_profile> {
   @override
   Widget build(BuildContext context) {
+    log(user!.uid);
     return Scaffold(
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),
       appBar: AppBar(
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
-          title: UserNicknameWidget(widget.uid),
+          title: UserNicknameWidget(user!.uid),
           centerTitle: false,
           actions: <Widget>[
             TextButton(
@@ -33,6 +33,10 @@ class _community_profileState extends State<community_profile> {
 
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/auth', (Route<dynamic> route) => false);
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  user = null;
+                });
+
                 setState(() {});
               },
               child: const Text(
@@ -56,7 +60,7 @@ class _community_profileState extends State<community_profile> {
                         onTap: () {
                           getuserImage();
                         },
-                        child: UserPicWidget(widget.uid, 40)),
+                        child: UserPicWidget(user!.uid, 40)),
                     Expanded(
                       flex: 1,
                       child: Column(
@@ -65,7 +69,7 @@ class _community_profileState extends State<community_profile> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                postnumberWidget(widget.uid),
+                                postnumberWidget(user!.uid),
                                 IconButton(
                                     icon: SvgPicture.asset(
                                       "assets/bookmark.svg",
@@ -89,7 +93,7 @@ class _community_profileState extends State<community_profile> {
                     padding: const EdgeInsets.only(
                       top: 15,
                     ),
-                    child: UserNicknameWidget(widget.uid)),
+                    child: UserNicknameWidget(user!.uid)),
               ],
             ),
           ),
@@ -100,7 +104,7 @@ class _community_profileState extends State<community_profile> {
           FutureBuilder(
             future: FirebaseFirestore.instance
                 .collection('posts')
-                .where('poster', isEqualTo: widget.uid)
+                .where('poster', isEqualTo: user!.uid)
                 .orderBy('publish_time', descending: true)
                 .get(),
             builder: (context, snapshot) {
