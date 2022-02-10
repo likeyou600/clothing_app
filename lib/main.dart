@@ -1,9 +1,9 @@
 import 'package:clothing_app/View/community.dart';
-import 'package:clothing_app/View/demo.dart';
+import 'package:clothing_app/View/upload.dart';
+import 'package:clothing_app/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'View/upload.dart';
 import 'View/Auth.dart';
 
 void main() async {
@@ -35,9 +35,9 @@ class _MyAppState extends State<MyApp> {
       home: user == null ? Auth() : community(),
       routes: <String, WidgetBuilder>{
         '/auth': (BuildContext context) => Auth(),
-        '/upload': (BuildContext context) => upload(),
         '/community': (BuildContext context) => community(),
-        '/demo': (BuildContext context) => demo(),
+        '/upload': (BuildContext context) => upload(),
+        '/calendar': (BuildContext context) => calendar(),
       },
     );
   }

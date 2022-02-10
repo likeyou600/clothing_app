@@ -1,3 +1,4 @@
+import 'package:clothing_app/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,7 +32,15 @@ class _ALL_postpageState extends State<ALL_postpage> {
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),
       appBar: AppBar(
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
-          title: Text("人雲衣雲")),
+          leading: IconButton(
+              icon: const Icon(Icons.calendar_today_outlined),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return calendar();
+                }));
+              }),
+          title: Text("人雲衣雲社群系統")),
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
           stream: posts,
