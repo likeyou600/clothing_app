@@ -31,11 +31,7 @@ class _community_profile_anotherseeState
               children: [
                 Row(
                   children: [
-                    GestureDetector(
-                        onTap: () {
-                          getuserImage();
-                        },
-                        child: UserPicWidget(widget.uid, 40)),
+                    UserPicWidget(widget.uid, 40),
                     Expanded(
                       flex: 1,
                       child: Column(

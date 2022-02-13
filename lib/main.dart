@@ -1,9 +1,11 @@
 import 'package:clothing_app/View/community.dart';
 import 'package:clothing_app/View/upload.dart';
 import 'package:clothing_app/calendar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'View/Auth.dart';
 
 void main() async {
@@ -31,14 +33,23 @@ User? user = FirebaseAuth.instance.currentUser;
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: user == null ? Auth() : community(),
-      routes: <String, WidgetBuilder>{
-        '/auth': (BuildContext context) => Auth(),
-        '/community': (BuildContext context) => community(),
-        '/upload': (BuildContext context) => upload(),
-        '/calendar': (BuildContext context) => calendar(),
+    return FlutterWebFrame(
+      builder: (context) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: user == null ? Auth() : community(),
+          routes: <String, WidgetBuilder>{
+            '/auth': (BuildContext context) => Auth(),
+            '/community': (BuildContext context) => community(),
+            '/upload': (BuildContext context) => upload(),
+            '/calendar': (BuildContext context) => calendar(),
+          },
+        );
       },
+      maximumSize: Size(475.0, 812.0), // Maximum size
+      enabled: kIsWeb, // default is enable, when disable content is full size
+      backgroundColor:
+          Color.fromRGBO(232, 215, 199, 0.5), // Background color/white space
     );
   }
 }

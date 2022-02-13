@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:flutter/material.dart';
@@ -94,15 +95,18 @@ class _uploadState extends State<upload> {
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
           title: Text('新增貼文'),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.add,
-                color: Colors.black,
+            if (defaultTargetPlatform == TargetPlatform.iOS ||
+                defaultTargetPlatform == TargetPlatform.android) ...[
+              IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  selectAssets();
+                },
               ),
-              onPressed: () {
-                selectAssets();
-              },
-            ),
+            ],
             if (assets.isNotEmpty == true) ...[
               TextButton(
                 onPressed: () => [
@@ -126,12 +130,22 @@ class _uploadState extends State<upload> {
             height: 15,
           ),
           if (assets.isNotEmpty == false) ...[
-            const Center(
-                child: Text('請按右上角+號 來新增貼文',
-                    style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0)))
+            if (defaultTargetPlatform == TargetPlatform.iOS ||
+                defaultTargetPlatform == TargetPlatform.android) ...[
+              const Center(
+                  child: Text('請按右上角+號 來新增貼文',
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0)))
+            ] else ...[
+              const Center(
+                  child: Text('請使用行動裝置 來新增貼文',
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0)))
+            ]
           ],
           if (assets.isNotEmpty == true) ...[
             Row(
