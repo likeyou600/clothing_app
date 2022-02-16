@@ -15,20 +15,21 @@ import 'package:clothing_app/main.dart';
 final ImagePicker image = ImagePicker();
 String? imageUrl;
 
-getImage() async {
-  final pickimg = await image.pickImage(source: ImageSource.gallery);
-  if (pickimg != null) {
-    var file = await ImageCropper.cropImage(
-        sourcePath: pickimg.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
-    file = await compressImage(file!.path, 90);
+// getImage() async {
+//   final pickimg = await image.pickImage(source: ImageSource.gallery);
+//   if (pickimg != null) {
+//     var file = await ImageCropper.cropImage(
+//         sourcePath: pickimg.path,
+//         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
+//     file = await compressImage(file!.path, 90);
 
-    final url = await _uploadFile(file.path);
+//     final url = await _uploadFile(file.path);
 
-    return url;
-  }
-}
+//     return url;
+//   }
+// }
 
+//上傳畫質調整
 Future<File> compressImage(String path, int quality) async {
   final newPath = p.join((await getTemporaryDirectory()).path,
       '${DateTime.now()}.${p.extension(path)}');
@@ -38,6 +39,7 @@ Future<File> compressImage(String path, int quality) async {
   return result!;
 }
 
+//上傳至firebase storage
 Future _uploadFile(String path) async {
   final ref = FirebaseStorage.instance
       .ref()
@@ -49,6 +51,7 @@ Future _uploadFile(String path) async {
   return fileUrl;
 }
 
+//貼文存至db
 Future savepictodb(String comment, List<AssetEntity> assets) async {
   List url = [];
   DocumentSnapshot userDoc =

@@ -1,29 +1,37 @@
 import 'package:clothing_app/Controller/AuthController.dart';
-import 'package:clothing_app/View/comment.dart';
+import 'package:clothing_app/View/comment/comment.dart';
 import 'package:clothing_app/View/community_profile_anothersee.dart';
 import 'package:clothing_app/View/likepage.dart';
-import 'package:clothing_app/Widget/like_animation.dart';
+import 'package:clothing_app/other/like_animation.dart';
 import 'package:clothing_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../Controller/PostController.dart';
-import '../constants.dart';
+import '../../Controller/PostController.dart';
+import '../../other/constants.dart';
 
-class notification_click_postWidget extends StatefulWidget {
+class rank_postWidget extends StatefulWidget {
   final postData;
 
-  notification_click_postWidget(this.postData);
+  rank_postWidget(this.postData);
   @override
-  _notification_click_postWidgetState createState() =>
-      _notification_click_postWidgetState();
+  _rank_postWidgetState createState() => _rank_postWidgetState();
 }
 
-class _notification_click_postWidgetState
-    extends State<notification_click_postWidget> {
+class _rank_postWidgetState extends State<rank_postWidget> {
   bool isLikeAnimating = false;
 
   @override
   Widget build(BuildContext context) {
+    Widget imageWidget(int index) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.network(
+          widget.postData['postpics'][index],
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
     DateTime publish_time =
         DateTime.fromMillisecondsSinceEpoch(widget.postData['publish_time']);
 
@@ -130,16 +138,27 @@ class _notification_click_postWidgetState
                           BoxShadow(
                               color: Colors.black38,
                               spreadRadius: 0,
-                              blurRadius: 10),
+                              blurRadius: 15),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          widget.postData['postpics'][0],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 250.0,
+                          child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: widget.postData['postpics'].length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 5.0, vertical: 10.0),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      imageWidget(index),
+                                    ],
+                                  ),
+                                );
+                              })),
                     ),
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
@@ -221,8 +240,8 @@ class _notification_click_postWidgetState
                 ),
               )),
           Padding(
-            padding: const EdgeInsets.only(left: 40.0, bottom: 5.0),
-            child: GestureDetector(
+              padding: const EdgeInsets.only(left: 40.0, bottom: 5.0),
+              child: GestureDetector(
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
@@ -232,8 +251,8 @@ class _notification_click_postWidgetState
                 child: Text(
                   widget.postData['likes'].length.toString() + " 個讚",
                   style: kTitleStyle,
-                )),
-          ),
+                ),
+              )),
           Padding(
             padding:
                 const EdgeInsets.only(left: 40.0, bottom: 5.0, right: 40.0),

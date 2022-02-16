@@ -1,7 +1,7 @@
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Controller/UserImageController.dart';
-import 'package:clothing_app/View/User_postPage.dart';
+import 'package:clothing_app/View/user_post/User_postPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

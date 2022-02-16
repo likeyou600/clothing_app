@@ -1,8 +1,8 @@
-import 'package:clothing_app/View/today_cloth.dart';
+import 'package:clothing_app/View/calander/today_cloth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import 'View/community.dart';
+import '../community.dart';
 
 class calendar extends StatefulWidget {
   calendar({Key? key}) : super(key: key);

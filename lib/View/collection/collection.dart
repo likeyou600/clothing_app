@@ -1,18 +1,18 @@
 import 'package:clothing_app/main.dart';
 
-import 'package:clothing_app/View/collection_postPage.dart';
+import 'package:clothing_app/View/collection/collection_postPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class community_collection extends StatefulWidget {
+class collection extends StatefulWidget {
   final uid;
 
-  community_collection(this.uid);
+  collection(this.uid);
   @override
-  State<community_collection> createState() => _community_collectionState();
+  State<collection> createState() => _collectionState();
 }
 
-class _community_collectionState extends State<community_collection> {
+class _collectionState extends State<collection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

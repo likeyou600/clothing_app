@@ -29,6 +29,7 @@ Future savecloth(OutfitModel outfitModel) async {
     }
   }
 }
+//儲存上衣
 
 //儲存褲子
 Future savepant(OutfitModel outfitModel) async {
@@ -210,3 +211,4 @@ class outfitWidget extends StatelessWidget {
         });
   }
 }
+//取得套裝

@@ -1,9 +1,9 @@
-import 'package:clothing_app/calendar.dart';
+import 'package:clothing_app/View/calander/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Widget/ALL_postWidget.dart';
+import 'ALL_postWidget.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

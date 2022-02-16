@@ -1,6 +1,6 @@
 import 'package:clothing_app/View/community.dart';
-import 'package:clothing_app/View/upload.dart';
-import 'package:clothing_app/calendar.dart';
+import 'package:clothing_app/View/community_upload.dart';
+import 'package:clothing_app/View/calander/calendar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
           routes: <String, WidgetBuilder>{
             '/auth': (BuildContext context) => Auth(),
             '/community': (BuildContext context) => community(),
-            '/upload': (BuildContext context) => upload(),
+            '/community_upload': (BuildContext context) => community_upload(),
             '/calendar': (BuildContext context) => calendar(),
           },
         );

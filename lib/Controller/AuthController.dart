@@ -1,5 +1,5 @@
 import 'package:clothing_app/Model/UserModel.dart';
-import 'package:clothing_app/View/reported.dart';
+import 'package:clothing_app/View/reported/reported.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_app/main.dart';
@@ -41,6 +41,7 @@ class UserNicknameWidget extends StatelessWidget {
     );
   }
 }
+//取得nickname
 
 //取得頭貼
 Future getuserpic(String user_id, double radius) async {
@@ -83,7 +84,9 @@ class UserPicWidget extends StatelessWidget {
     );
   }
 }
-//取得檢舉按鈕
+//取得頭貼
+
+//檢舉按鈕
 
 Future getuseradmin() async {
   DocumentSnapshot userDoc =
@@ -129,3 +132,4 @@ class reportedWidget extends StatelessWidget {
     );
   }
 }
+//檢舉按鈕

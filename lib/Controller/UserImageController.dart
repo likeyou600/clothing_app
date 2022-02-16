@@ -12,6 +12,7 @@ final ImagePicker image = ImagePicker();
 String? imageUrl;
 final users = FirebaseFirestore.instance.collection('users');
 
+//pickImage搜尋圖片
 getuserImage() async {
   final pickimg = await image.pickImage(source: ImageSource.gallery);
   if (pickimg != null) {
@@ -23,7 +24,7 @@ getuserImage() async {
     await _uploaduserFile(file.path);
   }
 }
-
+//上傳畫質調整
 Future<File> compressImage(String path, int quality) async {
   final newPath = p.join((await getTemporaryDirectory()).path,
       '${DateTime.now()}.${p.extension(path)}');
@@ -32,7 +33,7 @@ Future<File> compressImage(String path, int quality) async {
       quality: quality);
   return result!;
 }
-
+//貼文存至db
 Future _uploaduserFile(String path) async {
   final ref = FirebaseStorage.instance
       .ref()

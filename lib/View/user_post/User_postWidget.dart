@@ -1,23 +1,22 @@
-import 'package:clothing_app/Controller/AuthController.dart';
-import 'package:clothing_app/View/comment.dart';
-import 'package:clothing_app/View/community_profile_anothersee.dart';
-import 'package:clothing_app/View/likepage.dart';
-import 'package:clothing_app/Widget/like_animation.dart';
 import 'package:clothing_app/main.dart';
+import 'package:clothing_app/Controller/AuthController.dart';
+import 'package:clothing_app/View/comment/comment.dart';
+import 'package:clothing_app/View/likepage.dart';
+import 'package:clothing_app/other/like_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../Controller/PostController.dart';
-import '../constants.dart';
+import '../../Controller/PostController.dart';
+import '../../other/constants.dart';
 
-class reported_postWidget extends StatefulWidget {
+class User_postWidget extends StatefulWidget {
   final postData;
 
-  reported_postWidget(this.postData);
+  User_postWidget(this.postData);
   @override
-  _reported_postWidgetState createState() => _reported_postWidgetState();
+  _User_postWidgetState createState() => _User_postWidgetState();
 }
 
-class _reported_postWidgetState extends State<reported_postWidget> {
+class _User_postWidgetState extends State<User_postWidget> {
   bool isLikeAnimating = false;
 
   @override
@@ -31,6 +30,8 @@ class _reported_postWidgetState extends State<reported_postWidget> {
         ),
       );
     }
+
+    final check = user!.uid == widget.postData['poster'];
 
     DateTime publish_time =
         DateTime.fromMillisecondsSinceEpoch(widget.postData['publish_time']);
@@ -64,57 +65,50 @@ class _reported_postWidgetState extends State<reported_postWidget> {
               children: <Widget>[
                 UserPicWidget(widget.postData['poster'], 20),
                 const SizedBox(width: 12.0),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return community_profile_anothersee(
-                          widget.postData['poster']);
-                    }));
-                  },
-                  child: UserNicknameWidget(widget.postData['poster']),
-                ),
+                UserNicknameWidget(widget.postData['poster']),
                 Expanded(child: Container()),
-                GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        useRootNavigator: false,
-                        context: context,
-                        builder: (context) {
-                          return Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                TextButton(
-                                    onPressed: () {
-                                      deletePost(
-                                        widget.postData.id,
-                                      );
-                                      Navigator.of(context).pop();
-                                    },
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: Colors.white),
-                                    child: Text('刪除')),
-                                TextButton(
-                                    onPressed: () {
-                                      canclereportedpost(
-                                        widget.postData.id,
-                                      );
-                                      Navigator.of(context).pop();
-                                    },
-                                    style: TextButton.styleFrom(
-                                        backgroundColor: Colors.white),
-                                    child: Text('退回,取消檢舉'))
-                              ],
-                            ),
+                (check)
+                    ? GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            useRootNavigator: false,
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                child: ListView(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 16),
+                                    shrinkWrap: true,
+                                    children: [
+                                      '刪除',
+                                    ]
+                                        .map(
+                                          (e) => InkWell(
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 12,
+                                                        horizontal: 16),
+                                                child: Text(e),
+                                              ),
+                                              onTap: () {
+                                                deletePost(
+                                                  widget.postData.id,
+                                                );
+                                                // remove the dialog box
+                                                Navigator.of(context).pop();
+                                              }),
+                                        )
+                                        .toList()),
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    child: const Icon(
-                      Icons.more_vert,
-                      color: Colors.black,
-                    )),
+                        child: const Icon(
+                          Icons.more_vert,
+                          color: Colors.black,
+                        ))
+                    : SizedBox()
               ],
             ),
           ),

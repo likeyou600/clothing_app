@@ -2,17 +2,17 @@ import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clothing_app/main.dart';
 import 'package:flutter/material.dart';
-import 'community_profile_anothersee.dart';
+import '../community_profile_anothersee.dart';
 import 'notification_click_postpage.dart';
 
-class notification extends StatefulWidget {
-  notification({Key? key}) : super(key: key);
+class community_notification extends StatefulWidget {
+  community_notification({Key? key}) : super(key: key);
 
   @override
-  State<notification> createState() => _notificationState();
+  State<community_notification> createState() => _community_notificationState();
 }
 
-class _notificationState extends State<notification> {
+class _community_notificationState extends State<community_notification> {
   var check = 0;
   @override
   Widget build(BuildContext context) {

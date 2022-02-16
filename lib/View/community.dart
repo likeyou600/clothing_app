@@ -1,8 +1,8 @@
 import 'package:clothing_app/View/community_profile.dart';
-import 'package:clothing_app/View/community_ranking.dart';
-import 'package:clothing_app/View/notification.dart';
-import 'package:clothing_app/View/ALL_postpage.dart';
-import 'package:clothing_app/View/upload.dart';
+import 'package:clothing_app/View/ranking/community_ranking.dart';
+import 'package:clothing_app/View/notification/community_notification.dart';
+import 'package:clothing_app/View/all_post/ALL_postpage.dart';
+import 'package:clothing_app/View/community_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -15,8 +15,8 @@ class _communityState extends State<community> {
   int _selectedIndex = 0;
   static final List<Widget> _communityView = [
     ALL_postpage(),
-    notification(),
-    upload(),
+    community_notification(),
+    community_upload(),
     community_ranking(),
     community_profile(),
   ]; //要切到的頁面

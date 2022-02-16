@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
-  String poster;
-  String content;
-  DateTime publish_time;
-  bool reported;
-  List postpics;
-  List likes;
-  List collections;
-  int collections_number;
+  String poster; //發文者
+  String content; //發文內容
+  DateTime publish_time; //發文時間
+  bool reported; //true:被檢舉
+  List postpics; // 發文照片
+  List likes; //按讚者
+  List collections; //收藏者
+  int collections_number; //收藏人數
   PostModel({
     required this.poster,
     required this.content,

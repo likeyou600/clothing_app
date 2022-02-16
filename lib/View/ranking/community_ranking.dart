@@ -1,4 +1,4 @@
-import 'package:clothing_app/View/rank_postPage.dart';
+import 'package:clothing_app/View/ranking/rank_postPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

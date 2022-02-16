@@ -12,12 +12,12 @@ import 'package:clothing_app/main.dart';
 
 import '../Controller/PostImageController.dart';
 
-class upload extends StatefulWidget {
+class community_upload extends StatefulWidget {
   @override
-  State<upload> createState() => _uploadState();
+  State<community_upload> createState() => _community_uploadState();
 }
 
-class _uploadState extends State<upload> {
+class _community_uploadState extends State<community_upload> {
   final TextEditingController _descriptionController = TextEditingController();
 
   List<AssetEntity> assets = <AssetEntity>[];

@@ -1,37 +1,36 @@
 import 'package:clothing_app/Controller/AuthController.dart';
-import 'package:clothing_app/View/comment.dart';
+import 'package:clothing_app/View/comment/comment.dart';
 import 'package:clothing_app/View/community_profile_anothersee.dart';
 import 'package:clothing_app/View/likepage.dart';
-import 'package:clothing_app/Widget/like_animation.dart';
+import 'package:clothing_app/other/like_animation.dart';
 import 'package:clothing_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../Controller/PostController.dart';
-import '../constants.dart';
+import '../../Controller/PostController.dart';
+import '../../other/constants.dart';
 
-class rank_postWidget extends StatefulWidget {
+class ALL_postWidget extends StatefulWidget {
   final postData;
 
-  rank_postWidget(this.postData);
+  ALL_postWidget(this.postData);
   @override
-  _rank_postWidgetState createState() => _rank_postWidgetState();
+  _ALL_postWidgetState createState() => _ALL_postWidgetState();
 }
 
-class _rank_postWidgetState extends State<rank_postWidget> {
+class _ALL_postWidgetState extends State<ALL_postWidget> {
   bool isLikeAnimating = false;
+  Widget imageWidget(int index) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.0),
+      child: Image.network(
+        widget.postData['postpics'][index],
+        fit: BoxFit.cover,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    Widget imageWidget(int index) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
-          widget.postData['postpics'][index],
-          fit: BoxFit.cover,
-        ),
-      );
-    }
-
     DateTime publish_time =
         DateTime.fromMillisecondsSinceEpoch(widget.postData['publish_time']);
 
@@ -87,7 +86,7 @@ class _rank_postWidgetState extends State<rank_postWidget> {
                                     const EdgeInsets.symmetric(vertical: 16),
                                 shrinkWrap: true,
                                 children: [
-                                  '刪除',
+                                  '檢舉',
                                 ]
                                     .map(
                                       (e) => InkWell(
@@ -97,7 +96,7 @@ class _rank_postWidgetState extends State<rank_postWidget> {
                                             child: Text(e),
                                           ),
                                           onTap: () {
-                                            deletePost(
+                                            reportedpost(
                                               widget.postData.id,
                                             );
                                             // remove the dialog box
@@ -132,34 +131,41 @@ class _rank_postWidgetState extends State<rank_postWidget> {
                   alignment: Alignment.center,
                   children: [
                     Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black38,
-                              spreadRadius: 0,
-                              blurRadius: 15),
-                        ],
-                      ),
-                      child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 250.0,
-                          child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: widget.postData['postpics'].length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 5.0, vertical: 10.0),
-                                  child: Stack(
-                                    children: <Widget>[
-                                      imageWidget(index),
-                                    ],
-                                  ),
-                                );
-                              })),
-                    ),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black38,
+                                spreadRadius: 0,
+                                blurRadius: 15),
+                          ],
+                        ),
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 250.0,
+                            child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: widget.postData['postpics'].length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 5.0, vertical: 10.0),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        imageWidget(index),
+                                      ],
+                                    ),
+                                  );
+                                }))
+                        // child: ClipRRect(
+                        //   borderRadius: BorderRadius.circular(8.0),
+                        //   child: Image.network(
+                        //     widget.postData['postpics'][0],
+                        //     fit: BoxFit.cover,
+                        //   ),
+                        // ),
+                        ),
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
                       opacity: isLikeAnimating ? 1 : 0,

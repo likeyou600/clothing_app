@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 class CommentModel {
-  String post_id;
-  String poster;
-  List postpics;
-  String uid;
-  String comment;
-  DateTime comment_time;
-  List likes;
+  String post_id; //發文ID
+  String poster; //發文者
+  List postpics; //發文者貼文圖片 以利通知顯示圖片
+  String uid; //留言id
+  String comment; //留言內容
+  DateTime comment_time; //留言時間
+  List likes; //留言按讚者
   CommentModel({
     required this.post_id,
     required this.poster,

@@ -1,27 +1,29 @@
-import 'package:clothing_app/Widget/rank_postWidget.dart';
-import 'package:clothing_app/main.dart';
+import 'package:clothing_app/View/ranking/rank_postWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class collection_postPage extends StatefulWidget {
+class rank_postPage extends StatefulWidget {
   final index;
-  collection_postPage(this.index);
+  rank_postPage(this.index);
+
   @override
-  _collection_postPageState createState() => _collection_postPageState();
+  _rank_postPageState createState() => _rank_postPageState();
 }
 
-class _collection_postPageState extends State<collection_postPage> {
+class _rank_postPageState extends State<rank_postPage> {
   @override
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> posts = FirebaseFirestore.instance
         .collection('posts')
-        .where('collections', arrayContainsAny: [user!.uid]).snapshots();
+        .orderBy('collections_number', descending: true)
+        .snapshots();
     ItemScrollController _scrollController = ItemScrollController();
 
     Future.delayed(const Duration(milliseconds: 200), () {
       _scrollController.jumpTo(index: widget.index);
     });
+
     return MaterialApp(
         home: Scaffold(
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),

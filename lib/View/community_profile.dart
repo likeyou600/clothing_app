@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Controller/UserImageController.dart';
-import 'package:clothing_app/View/User_postPage.dart';
-import 'package:clothing_app/View/community_collection.dart';
+import 'package:clothing_app/View/user_post/User_postPage.dart';
+import 'package:clothing_app/View/collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ class _community_profileState extends State<community_profile> {
                                     onPressed: () {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(builder: (context) {
-                                        return community_collection(user!.uid);
+                                        return collection(user!.uid);
                                       }));
                                     }),
                                 reportedWidget()

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 class OutfitModel {
-  String poster;
-  String date;
-  String clothes;
-  String pants;
+  String poster; //發文者
+  String date; //日期
+  String clothes; //衣服url
+  String pants; //褲子url
   OutfitModel({
     required this.poster,
     required this.date,

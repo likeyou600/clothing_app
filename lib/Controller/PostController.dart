@@ -1,6 +1,6 @@
 import 'package:clothing_app/Model/CommentModel.dart';
 import 'package:clothing_app/Model/PostModel.dart';
-import 'package:clothing_app/constants.dart';
+import 'package:clothing_app/other/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:clothing_app/main.dart';
@@ -50,6 +50,7 @@ likepost(String post_id) async {
   }
 }
 
+//雙擊貼文
 doublelikepost(String post_id) async {
   DocumentSnapshot doc = await posts.doc(post_id).get();
   if ((doc.data()! as dynamic)['likes'].contains(user!.uid)) {

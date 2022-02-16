@@ -1,4 +1,4 @@
-import 'package:clothing_app/View/repoted_postPage.dart';
+import 'package:clothing_app/View/reported/repoted_postPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

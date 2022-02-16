@@ -1,4 +1,4 @@
-import 'package:clothing_app/Widget/notification_click_postWidget.dart';
+import 'package:clothing_app/View/notification/notification_click_postWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

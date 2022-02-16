@@ -1,4 +1,4 @@
-import 'package:clothing_app/Widget/reported_postWidget.dart';
+import 'package:clothing_app/View/reported/reported_postWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
