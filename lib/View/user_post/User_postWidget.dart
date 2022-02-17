@@ -1,3 +1,4 @@
+import 'package:clothing_app/View/editpost.dart';
 import 'package:clothing_app/main.dart';
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/View/comment/comment.dart';
@@ -74,32 +75,35 @@ class _User_postWidgetState extends State<User_postWidget> {
                             useRootNavigator: false,
                             context: context,
                             builder: (context) {
-                              return Dialog(
-                                child: ListView(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
-                                    shrinkWrap: true,
-                                    children: [
-                                      '刪除',
-                                    ]
-                                        .map(
-                                          (e) => InkWell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 12,
-                                                        horizontal: 16),
-                                                child: Text(e),
-                                              ),
-                                              onTap: () {
-                                                deletePost(
-                                                  widget.postData.id,
-                                                );
-                                                // remove the dialog box
-                                                Navigator.of(context).pop();
-                                              }),
-                                        )
-                                        .toList()),
+                              return Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    TextButton(
+                                        onPressed: () {
+                                          deletePost(
+                                            widget.postData.id,
+                                          );
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: TextButton.styleFrom(
+                                            backgroundColor: Colors.white),
+                                        child: Text('刪除')),
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return editpost(
+                                              widget.postData.id,
+                                            );
+                                          }));
+                                        },
+                                        style: TextButton.styleFrom(
+                                            backgroundColor: Colors.white),
+                                        child: Text('修改貼文'))
+                                  ],
+                                ),
                               );
                             },
                           );
@@ -127,35 +131,65 @@ class _User_postWidgetState extends State<User_postWidget> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black38,
-                              spreadRadius: 0,
-                              blurRadius: 15),
-                        ],
-                      ),
-                      child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 250.0,
-                          child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: widget.postData['postpics'].length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 5.0, vertical: 10.0),
-                                  child: Stack(
-                                    children: <Widget>[
-                                      imageWidget(index),
-                                    ],
-                                  ),
-                                );
-                              })),
-                    ),
+                    if (widget.postData['postpics'].length != 1) ...[
+                      Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black38,
+                                  spreadRadius: 0,
+                                  blurRadius: 15),
+                            ],
+                          ),
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 250.0,
+                              child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: widget.postData['postpics'].length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    if (widget.postData['postpics'].length !=
+                                        1) {
+                                      // return
+
+                                      return Container(
+                                        alignment: Alignment.center,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 5.0, vertical: 10.0),
+                                        child: Stack(
+                                          children: <Widget>[
+                                            imageWidget(index)
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                    return Container();
+                                  })))
+                    ] else ...[
+                      Container(
+                        constraints: const BoxConstraints(
+                            minHeight: 100, maxHeight: 250),
+                        decoration: const BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black38,
+                                spreadRadius: 0,
+                                blurRadius: 15),
+                          ],
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            widget.postData['postpics'][0],
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      )
+                    ],
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
                       opacity: isLikeAnimating ? 1 : 0,

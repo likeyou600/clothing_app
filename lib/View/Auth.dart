@@ -164,9 +164,9 @@ String? validatePassword(String? formPassword) {
 String? validateNickname(String? formEmail) {
   if (formEmail == null || formEmail.isEmpty) return '請記得暱稱(英文)';
 
-  String pattern = r'[a-z]';
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formEmail)) return '英文小寫';
+  // String pattern = r'[a-z]';
+  // RegExp regex = RegExp(pattern);
+  // if (!regex.hasMatch(formEmail)) return '英文小寫';
 
   return null;
 }

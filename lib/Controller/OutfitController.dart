@@ -86,7 +86,12 @@ class outfitWidget extends StatelessWidget {
                   //   return 衣服介面(date);
                   // }));
 
-                  // savecloth(OutfitModel(poster: user!.uid, date: date, clothes: 衣服的網址, pants: ''));
+                  // savecloth(OutfitModel(
+                  //     poster: user!.uid,
+                  //     date: '2022-02-17',
+                  //     clothes:
+                  //         'https://firebasestorage.googleapis.com/v0/b/clothing-f7788.appspot.com/o/posts%2Fpngfind.com-aesthetic-png-tumblr-1976459.png?alt=media&token=658b45c9-b918-4677-a404-7adaa8f05b26',
+                  //     pants: ''));
 
                   //  Navigator.of(context).pop();
                 },

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:clothing_app/Controller/AuthController.dart';
 import 'package:clothing_app/Controller/PostController.dart';
 import 'package:clothing_app/Controller/UserImageController.dart';
+import 'package:clothing_app/View/editnickname.dart';
 import 'package:clothing_app/View/user_post/User_postPage.dart';
 import 'package:clothing_app/View/collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +25,14 @@ class _community_profileState extends State<community_profile> {
       backgroundColor: Color.fromRGBO(232, 215, 199, 1),
       appBar: AppBar(
           backgroundColor: Color.fromRGBO(174, 221, 239, 1),
-          title: UserNicknameWidget(user!.uid),
+          title: GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return editnickname();
+                }));
+              },
+              child: UserNicknameWidget(user!.uid)),
           centerTitle: false,
           actions: <Widget>[
             TextButton(
@@ -88,12 +96,6 @@ class _community_profileState extends State<community_profile> {
                     ),
                   ],
                 ),
-                Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(
-                      top: 15,
-                    ),
-                    child: UserNicknameWidget(user!.uid)),
               ],
             ),
           ),

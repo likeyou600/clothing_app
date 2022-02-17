@@ -12,6 +12,13 @@ Future createUser(UserModel userModel) async {
   await users.set(json);
 }
 
+//修改名稱
+Editnickname(String newnickname) async {
+  await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+    'nickname': newnickname,
+  });
+}
+
 //取得nickname
 Future getnickname(String user_id) async {
   DocumentSnapshot userDoc =

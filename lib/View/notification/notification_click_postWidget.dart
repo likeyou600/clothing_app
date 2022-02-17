@@ -24,6 +24,16 @@ class _notification_click_postWidgetState
 
   @override
   Widget build(BuildContext context) {
+    Widget imageWidget(int index) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.network(
+          widget.postData['postpics'][index],
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
     DateTime publish_time =
         DateTime.fromMillisecondsSinceEpoch(widget.postData['publish_time']);
 
@@ -123,24 +133,65 @@ class _notification_click_postWidgetState
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black38,
-                              spreadRadius: 0,
-                              blurRadius: 10),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          widget.postData['postpics'][0],
-                          fit: BoxFit.cover,
+                    if (widget.postData['postpics'].length != 1) ...[
+                      Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black38,
+                                  spreadRadius: 0,
+                                  blurRadius: 15),
+                            ],
+                          ),
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 250.0,
+                              child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: widget.postData['postpics'].length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    if (widget.postData['postpics'].length !=
+                                        1) {
+                                      // return
+
+                                      return Container(
+                                        alignment: Alignment.center,
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 5.0, vertical: 10.0),
+                                        child: Stack(
+                                          children: <Widget>[
+                                            imageWidget(index)
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                    return Container();
+                                  })))
+                    ] else ...[
+                      Container(
+                        constraints: const BoxConstraints(
+                            minHeight: 100, maxHeight: 250),
+                        decoration: const BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black38,
+                                spreadRadius: 0,
+                                blurRadius: 15),
+                          ],
                         ),
-                      ),
-                    ),
+                        width: MediaQuery.of(context).size.width,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            widget.postData['postpics'][0],
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      )
+                    ],
                     AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
                       opacity: isLikeAnimating ? 1 : 0,

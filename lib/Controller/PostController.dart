@@ -85,6 +85,24 @@ Future commentpost(CommentModel commentModel) async {
   await comments.doc().set(json);
 }
 
+//刪留言
+Future deletecomment(String postId) async {
+  await posts.doc(postId).delete();
+  await comments
+      .where('post_id', isEqualTo: postId)
+      .get()
+      .then((value) => value.docs.forEach((element) {
+            comments.doc(element.id).delete();
+          }));
+}
+
+//修改貼文
+Editpost(String post_id, String content) async {
+  await posts.doc(post_id).update({
+    'content': content,
+  });
+}
+
 //按讚留言
 likecomment(String comment_id) async {
   DocumentSnapshot doc = await comments.doc(comment_id).get();
