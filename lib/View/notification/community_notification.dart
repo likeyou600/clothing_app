@@ -180,7 +180,7 @@ class _community_notificationState extends State<community_notification> {
                 }
 
                 return ListView.builder(
-                    itemCount: 1,
+                    itemCount: (snapshot.data! as dynamic).docs.length,
                     scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
                     // shrinkWrap: true,
