@@ -161,10 +161,13 @@ class _community_notificationState extends State<community_notification> {
           );
         } else {
           return FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('posts')
-                  .where('poster', isEqualTo: user!.uid)
-                  .get(),
+              future: Future.wait([
+                getdata(),
+                FirebaseFirestore.instance
+                    .collection('posts')
+                    .where('poster', isEqualTo: user!.uid)
+                    .get()
+              ]),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
                   return Container(
@@ -180,15 +183,15 @@ class _community_notificationState extends State<community_notification> {
                 }
 
                 return ListView.builder(
-                    itemCount: (snapshot.data! as dynamic).docs.length,
+                    itemCount: snapshot.data[0],
                     scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
                     // shrinkWrap: true,
                     itemBuilder: (context, index) {
                       DocumentSnapshot snap =
-                          (snapshot.data! as dynamic).docs[index];
+                          (snapshot.data[1]! as dynamic).docs[index];
                       var likes_data =
-                          (snapshot.data! as dynamic).docs[index]['likes'];
+                          (snapshot.data[1]! as dynamic).docs[index]['likes'];
                       if (snap['poster'] != likes_data[index].toString()) {
                         return ListTile(
                           leading:
@@ -246,5 +249,5 @@ Future getdata() async {
       .then((value) => value.docs.forEach((element) {
             likelength += element['likes'].length;
           }));
-  return likelength.toInt();
+  return likelength;
 }
