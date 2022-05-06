@@ -78,7 +78,8 @@ class _AuthState extends State<Auth> {
                                         .then((value) => createUser(UserModel(
                                               uid: (value.user?.uid).toString(),
                                               nickname: nicknameController.text,
-                                              userpic: '',
+                                              userpic:
+                                                  'https://tp.parenting.com.tw/images/user-cover.jpg',
                                               admin: false,
                                             )));
                                     user = FirebaseAuth.instance.currentUser;
