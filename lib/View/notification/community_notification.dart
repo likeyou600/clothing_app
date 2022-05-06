@@ -55,11 +55,14 @@ class _community_notificationState extends State<community_notification> {
       body: Center(child: Builder(builder: (context) {
         if (check == 0) {
           return FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('comments')
-                .where('poster', isEqualTo: user!.uid)
-                .orderBy('comment_time', descending: true)
-                .get(),
+            future: Future.wait([
+              getcommentdata(),
+              FirebaseFirestore.instance
+                  .collection('comments')
+                  .where('poster', isEqualTo: user!.uid)
+                  .orderBy('comment_time', descending: true)
+                  .get()
+            ]),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
                 return Container(
@@ -75,13 +78,13 @@ class _community_notificationState extends State<community_notification> {
               }
 
               return ListView.builder(
-                  itemCount: (snapshot.data! as dynamic).docs.length,
+                  itemCount: snapshot.data[0],
                   scrollDirection: Axis.vertical,
                   physics: ScrollPhysics(),
                   // shrinkWrap: true,
                   itemBuilder: (context, index) {
                     DocumentSnapshot snap =
-                        (snapshot.data! as dynamic).docs[index];
+                        (snapshot.data[1]! as dynamic).docs[index];
 
                     if (snap['poster'] != snap['uid']) {
                       DateTime comment_time =
@@ -162,7 +165,7 @@ class _community_notificationState extends State<community_notification> {
         } else {
           return FutureBuilder(
               future: Future.wait([
-                getdata(),
+                getlikedata(),
                 FirebaseFirestore.instance
                     .collection('posts')
                     .where('poster', isEqualTo: user!.uid)
@@ -240,7 +243,7 @@ class _community_notificationState extends State<community_notification> {
   }
 }
 
-Future getdata() async {
+Future getlikedata() async {
   num likelength = 0;
   await FirebaseFirestore.instance
       .collection('posts')
@@ -250,4 +253,14 @@ Future getdata() async {
             likelength += element['likes'].length;
           }));
   return likelength;
+}
+
+Future getcommentdata() async {
+  var snapshot = await FirebaseFirestore.instance
+      .collection('comments')
+      .where('poster', isEqualTo: user!.uid)
+      .get();
+  num commentlength = snapshot.size;
+
+  return commentlength;
 }
