@@ -55,14 +55,11 @@ class _community_notificationState extends State<community_notification> {
       body: Center(child: Builder(builder: (context) {
         if (check == 0) {
           return FutureBuilder(
-            future: Future.wait([
-              getcommentdata(),
-              FirebaseFirestore.instance
-                  .collection('comments')
-                  .where('poster', isEqualTo: user!.uid)
-                  .orderBy('comment_time', descending: true)
-                  .get()
-            ]),
+            future: FirebaseFirestore.instance
+                .collection('comments')
+                .where('poster', isEqualTo: user!.uid)
+                .orderBy('comment_time', descending: true)
+                .get(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
                 return Container(
@@ -78,13 +75,13 @@ class _community_notificationState extends State<community_notification> {
               }
 
               return ListView.builder(
-                  itemCount: snapshot.data[0],
+                  itemCount: (snapshot.data! as dynamic).docs.length,
                   scrollDirection: Axis.vertical,
                   physics: ScrollPhysics(),
                   // shrinkWrap: true,
                   itemBuilder: (context, index) {
                     DocumentSnapshot snap =
-                        (snapshot.data[1]! as dynamic).docs[index];
+                        (snapshot.data! as dynamic).docs[index];
 
                     if (snap['poster'] != snap['uid']) {
                       DateTime comment_time =
@@ -164,13 +161,11 @@ class _community_notificationState extends State<community_notification> {
           );
         } else {
           return FutureBuilder(
-              future: Future.wait([
-                getlikedata(),
-                FirebaseFirestore.instance
-                    .collection('posts')
-                    .where('poster', isEqualTo: user!.uid)
-                    .get()
-              ]),
+              future: FirebaseFirestore.instance
+                  .collection('likes')
+                  .where('poster', isEqualTo: user!.uid)
+                  .orderBy('like_time', descending: true)
+                  .get(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
                   return Container(
@@ -186,22 +181,19 @@ class _community_notificationState extends State<community_notification> {
                 }
 
                 return ListView.builder(
-                    itemCount: snapshot.data[0],
+                    itemCount: (snapshot.data! as dynamic).docs.length,
                     scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
                     // shrinkWrap: true,
                     itemBuilder: (context, index) {
                       DocumentSnapshot snap =
-                          (snapshot.data[1]! as dynamic).docs[index];
-                      var likes_data =
-                          (snapshot.data[1]! as dynamic).docs[index]['likes'];
-                      if (snap['poster'] != likes_data[index].toString()) {
+                          (snapshot.data! as dynamic).docs[index];
+                      if (snap['poster'] != snap['uid']) {
                         return ListTile(
-                          leading:
-                              UserPicWidget(likes_data[index].toString(), 20),
+                          leading: UserPicWidget(snap['uid'], 20),
                           title: Row(
                             children: [
-                              UserNicknameWidget(likes_data[index].toString()),
+                              UserNicknameWidget(snap['uid']),
                               Expanded(child: Text(" 說你的相片讚。")),
                               GestureDetector(
                                   onTap: () {
@@ -241,26 +233,4 @@ class _community_notificationState extends State<community_notification> {
       })),
     );
   }
-}
-
-Future getlikedata() async {
-  num likelength = 0;
-  await FirebaseFirestore.instance
-      .collection('posts')
-      .where('poster', isEqualTo: user!.uid)
-      .get()
-      .then((value) => value.docs.forEach((element) {
-            likelength += element['likes'].length;
-          }));
-  return likelength;
-}
-
-Future getcommentdata() async {
-  var snapshot = await FirebaseFirestore.instance
-      .collection('comments')
-      .where('poster', isEqualTo: user!.uid)
-      .get();
-  num commentlength = snapshot.size;
-
-  return commentlength;
 }

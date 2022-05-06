@@ -1,4 +1,5 @@
 import 'package:clothing_app/Controller/AuthController.dart';
+import 'package:clothing_app/Model/LikeModel.dart';
 import 'package:clothing_app/View/comment/comment.dart';
 import 'package:clothing_app/View/community_profile_anothersee.dart';
 import 'package:clothing_app/View/likepage.dart';
@@ -128,7 +129,13 @@ class _notification_click_postWidgetState
                   setState(() {
                     isLikeAnimating = true;
                   });
-                  doublelikepost(widget.postData.id);
+                  doublelikepost(LikeModel(
+                    post_id: widget.postData.id,
+                    poster: widget.postData['poster'],
+                    postpics: widget.postData['postpics'],
+                    uid: user!.uid,
+                    like_time: DateTime.now(),
+                  ));
                 },
                 child: Stack(
                   alignment: Alignment.center,
@@ -228,7 +235,13 @@ class _notification_click_postWidgetState
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-                            likepost(widget.postData.id);
+                            likepost(LikeModel(
+                              post_id: widget.postData.id,
+                              poster: widget.postData['poster'],
+                              postpics: widget.postData['postpics'],
+                              uid: user!.uid,
+                              like_time: DateTime.now(),
+                            ));
                           },
                           child: SvgPicture.asset(
                             "assets/favorite.svg",

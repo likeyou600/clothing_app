@@ -1,4 +1,5 @@
 import 'package:clothing_app/Model/CommentModel.dart';
+import 'package:clothing_app/Model/LikeModel.dart';
 import 'package:clothing_app/Model/PostModel.dart';
 import 'package:clothing_app/other/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:clothing_app/main.dart';
 
 final posts = FirebaseFirestore.instance.collection('posts');
 final comments = FirebaseFirestore.instance.collection('comments');
+final likes = FirebaseFirestore.instance.collection('likes');
 
 //創立貼文
 Future createPost(PostModel postModel) async {
@@ -36,30 +38,47 @@ Future canclereportedpost(String postId) async {
 }
 
 //按貼文讚
-likepost(String post_id) async {
-  DocumentSnapshot doc = await posts.doc(post_id).get();
+likepost(LikeModel likeModel) async {
+  DocumentSnapshot doc = await posts.doc(likeModel.post_id).get();
   if ((doc.data()! as dynamic)['likes'].contains(user!.uid)) {
-    await posts.doc(post_id).update({
+    await posts.doc(likeModel.post_id).update({
       'likes': FieldValue.arrayRemove([user!.uid]),
     });
+    await likes
+        .where('post_id', isEqualTo: likeModel.post_id)
+        .where('uid', isEqualTo: user!.uid)
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              likes.doc(element.id).delete();
+            }));
   } else {
-    await posts.doc(post_id).update({
+    await posts.doc(likeModel.post_id).update({
       'likes':
           FieldValue.arrayUnion([user!.uid]), //因欄位是 Array 資料型別時 故採用FieldValue
     });
+    final json = likeModel.toMap();
+    await likes.doc().set(json);
   }
 }
 
 //雙擊貼文
-doublelikepost(String post_id) async {
-  DocumentSnapshot doc = await posts.doc(post_id).get();
+doublelikepost(LikeModel likeModel) async {
+  DocumentSnapshot doc = await posts.doc(likeModel.post_id).get();
   if ((doc.data()! as dynamic)['likes'].contains(user!.uid)) {
   } else {
-    await posts.doc(post_id).update({
+    await posts.doc(likeModel.post_id).update({
       'likes':
           FieldValue.arrayUnion([user!.uid]), //因欄位是 Array 資料型別時 故採用FieldValue
     });
+    final json = likeModel.toMap();
+    await likes.doc().set(json);
   }
+}
+
+//留言貼文
+Future commentpost(CommentModel commentModel) async {
+  final json = commentModel.toMap();
+  await comments.doc().set(json);
 }
 
 //按貼文收藏
@@ -77,12 +96,6 @@ collectionpost(String post_id) async {
       'collections_number': FieldValue.increment(1)
     });
   }
-}
-
-//留言貼文
-Future commentpost(CommentModel commentModel) async {
-  final json = commentModel.toMap();
-  await comments.doc().set(json);
 }
 
 //刪留言
