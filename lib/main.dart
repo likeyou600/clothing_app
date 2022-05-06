@@ -13,10 +13,10 @@ void main() async {
 
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-          apiKey: 'AIzaSyDA7MvDgUaOtGPYbDGJY9_QsYM4rI58Gu8',
-          appId: '1:263023150372:android:03b2965ec676e8a8049fb1',
+          apiKey: 'AIzaSyDzQmyRJsiSZk57kG4AUXI9cwGE994J8nw',
+          appId: '1:878404736647:android:3a6e8b90003df9aa694a22',
           messagingSenderId: 'messagingSenderId',
-          projectId: 'clothing-f7788'));
+          projectId: 'clothing-55e8a'));
 
   runApp(const MyApp());
 }

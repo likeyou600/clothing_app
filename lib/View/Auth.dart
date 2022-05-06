@@ -154,9 +154,9 @@ String? validateEmail(String? formEmail) {
 String? validatePassword(String? formPassword) {
   if (formPassword == null || formPassword.isEmpty) return '請記得填密碼';
 
-  String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$';
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formPassword)) return '密碼至少需8位，且包含大小寫英文及數字';
+  // String pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$';
+  // RegExp regex = RegExp(pattern);
+  // if (!regex.hasMatch(formPassword)) return '密碼至少需8位，且包含大小寫英文及數字';
 
   return null;
 }
